@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">myEmergency</string>
+
+    <string name="app_name">Information</string>
+    
+    <!-- task list screen -->
+    <string name="information_name">Name</string>
+    <string name="information_surname">Surname</string>
+    
+    <!-- add/edit screen -->
+    <string name="information_name_hint">Name</string>
+    <string name="information_surname_hint">Surname</string>
+    <string name="information_CF_hint">CF</string>
+    <string name="information_anni_hint">Anni</string>
+    <string name="information_telephone_hint">Telephone</string>
+    <string name="completed">Completed</string>
+    
+    <!-- menu items -->
+    <string name="add_task">Add Information</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
 </resources>
