@@ -12,6 +12,8 @@
     <string name="information_CF_hint">CF</string>
     <string name="information_anni_hint">Anni</string>
     <string name="information_telephone_hint">Telephone</string>
+    <string name="information_contact1_hint">Contact1</string>
+    <string name="information_contact2_hint">Contact2</string>
     <string name="completed">Completed</string>
     
     <!-- menu items -->
