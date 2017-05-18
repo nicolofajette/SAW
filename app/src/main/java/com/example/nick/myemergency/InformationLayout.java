@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 public class InformationLayout extends RelativeLayout implements View.OnClickListener {
 
     private CheckBox cancelCheckBox;
@@ -74,11 +76,14 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
                 db.updateInformation(information);
                 break;
             default:
-                Intent intent = new Intent(context, AddEditActivity.class);
+                /*Intent intent = new Intent(context, AddEditActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("informationId", information.getId());
                 intent.putExtra("editMode", true);
-                context.startActivity(intent);
+                context.startActivity(intent);*/
+                HashMap<String, String> hash = new HashMap<String, String>();
+                hash.put("pippo","franco");
+                new SendRequest().execute(hash);
                 break;
         }
     }

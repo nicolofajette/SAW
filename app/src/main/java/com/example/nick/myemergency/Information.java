@@ -6,7 +6,7 @@ public class Information {
     private String name;
     private String surname;
     private String CF;
-    private String anni;
+    private String date_of_birth;
     private String telephone;
     private String contact1;
     private String contact2;
@@ -23,11 +23,11 @@ public class Information {
         hidden = FALSE;
     }
 
-    public Information(String name, String surname, String CF, String anni, String telephone, String contact1, String contact2, String cancel, String hidden) {
+    public Information(String name, String surname, String CF, String date_of_birth, String telephone, String contact1, String contact2, String cancel, String hidden) {
         this.name = name;
         this.surname = surname;
         this.CF = CF;
-        this.anni = anni;
+        this.date_of_birth = date_of_birth;
         this.telephone = telephone;
         this.contact1 = contact1;
         this.contact2 = contact2;
@@ -35,12 +35,12 @@ public class Information {
         this.hidden = hidden;
     }
 
-    public Information(int id, String name, String surname, String CF, String anni, String telephone, String contact1, String contact2, String cancel, String hidden) {
+    public Information(int id, String name, String surname, String CF, String date_of_birth, String telephone, String contact1, String contact2, String cancel, String hidden) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.CF = CF;
-        this.anni = anni;
+        this.date_of_birth = date_of_birth;
         this.telephone = telephone;
         this.contact1 = contact1;
         this.contact2 = contact2;
@@ -81,12 +81,12 @@ public class Information {
         return CF;
     }
 
-    public void setAnni(String anni) {
-        this.anni = anni;
+    public void setDate_of_birth(String date_of_birth) {
+        this.date_of_birth = date_of_birth;
     }
 
-    public String getAnni() {
-        return anni;
+    public String getDate_of_birth() {
+        return date_of_birth;
     }
 
     public void setTelephone(String telephone) {

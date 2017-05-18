@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyEmergencyDB {
 
@@ -18,7 +19,7 @@ public class MyEmergencyDB {
     // information table constants
     public static final String INFORMATION_TABLE = "information";
 
-    public static final String INFORMATION_ID = "_id";
+    public static final String INFORMATION_ID = "id_i";
     public static final int    INFORMATION_ID_COL = 0;
 
     public static final String INFORMATION_NAME = "name";
@@ -30,8 +31,8 @@ public class MyEmergencyDB {
     public static final String INFORMATION_CF = "CF";
     public static final int   INFORMATION_CF_COL = 3;
 
-    public static final String INFORMATION_ANNI = "anni";
-    public static final int   INFORMATION_ANNI_COL = 4;
+    public static final String INFORMATION_DATE_OF_BIRTH = "date_of_birth";
+    public static final int   INFORMATION_DATE_OF_BIRTH_COL = 4;
 
     public static final String INFORMATION_TELEPHONE = "telephone";
     public static final int   INFORMATION_TELEPHONE_COL = 5;
@@ -48,6 +49,14 @@ public class MyEmergencyDB {
     public static final String TASK_HIDDEN = "hidden";
     public static final int    TASK_HIDDEN_COL = 9;
 
+    //problems table constants
+    public static final String PROBLEMS_TABLE = "problems";
+
+    public static final String PROBLEMS_ID = "id_p";
+    public static final int    PROBLEMS_ID_COL = 0;
+
+    public static final String PROBLEMS_NAME ="problem_name";
+    public static final int    PROBLEMS_NAME_COL = 1;
 
     // CREATE and DROP TABLE statements
     public static final String CREATE_INFORMATION_TABLE =
@@ -56,12 +65,17 @@ public class MyEmergencyDB {
                     INFORMATION_NAME    + " TEXT, " +
                     INFORMATION_SURNAME      + " TEXT, " +
                     INFORMATION_CF      + " TEXT, " +
-                    INFORMATION_ANNI  + " TEXT, " +
+                    INFORMATION_DATE_OF_BIRTH  + " TEXT, " +
                     INFORMATION_TELEPHONE     + " TEXT," +
                     INFORMATION_CONTACT1    + " TEXT," +
                     INFORMATION_CONTACT2    + " TEXT," +
                     INFORMATION_CANCEL  + " TEXT, " +
                     TASK_HIDDEN     + " TEXT)";
+
+    public static final String CREATE_PROBLEMS_TABLE =
+            "CREATE TABLE " + PROBLEMS_TABLE + " (" +
+                    PROBLEMS_ID         + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    PROBLEMS_NAME       + " TEXT)";
 
     public static final String DROP_INFORMATION_TABLE =
             "DROP TABLE IF EXISTS " + INFORMATION_TABLE;
@@ -78,9 +92,18 @@ public class MyEmergencyDB {
         public void onCreate(SQLiteDatabase db) {
             // create tables
             db.execSQL(CREATE_INFORMATION_TABLE);
+            db.execSQL(CREATE_PROBLEMS_TABLE);
 
-            // insert sample tasks
-            db.execSQL("INSERT INTO information VALUES (1, 'Nicolò', 'Fajette', 'FJTNCL95R02D969Z', '21', '3336518727', '3929138750', '3316013558', '0', '0')");
+            // insert problems
+            db.execSQL("INSERT INTO problems VALUES (1, 'infarto')");
+            db.execSQL("INSERT INTO problems VALUES (2, 'non respira')");
+            db.execSQL("INSERT INTO problems VALUES (3, 'non cosciente')");
+            db.execSQL("INSERT INTO problems VALUES (4, 'non risponde')");
+            db.execSQL("INSERT INTO problems VALUES (5, 'emorragia')");
+            db.execSQL("INSERT INTO problems VALUES (6, 'frattura')");
+            db.execSQL("INSERT INTO problems VALUES (7, 'incidente stradale')");
+            db.execSQL("INSERT INTO problems VALUES (8, 'incidente casalingo')");
+            db.execSQL("INSERT INTO problems VALUES (9, 'incidente sul lavoro')");
         }
 
         @Override
@@ -166,7 +189,7 @@ public class MyEmergencyDB {
                         cursor.getString(INFORMATION_NAME_COL),
                         cursor.getString(INFORMATION_SURNAME_COL),
                         cursor.getString(INFORMATION_CF_COL),
-                        cursor.getString(INFORMATION_ANNI_COL),
+                        cursor.getString(INFORMATION_DATE_OF_BIRTH_COL),
                         cursor.getString(INFORMATION_TELEPHONE_COL),
                         cursor.getString(INFORMATION_CONTACT1_COL),
                         cursor.getString(INFORMATION_CONTACT2_COL),
@@ -180,12 +203,42 @@ public class MyEmergencyDB {
         }
     }
 
+    public ArrayList<Problem> getProblems() {
+        ArrayList<Problem> problems = new ArrayList<Problem>();
+        openReadableDB();
+        Cursor  cursor = db.rawQuery("SELECT * FROM problems",null);
+        while (cursor.moveToNext()) {
+            problems.add(getProblemFromCursor(cursor));
+        }
+        cursor.close();
+        closeDB();
+        return problems;
+    }
+
+    private static Problem getProblemFromCursor(Cursor cursor) {
+        if (cursor == null || cursor.getCount() == 0){
+            return null;
+        }
+        else {
+            try {
+                Problem problem = new Problem(
+                        cursor.getInt(PROBLEMS_ID_COL),
+                        cursor.getString(PROBLEMS_NAME_COL));
+                return problem;
+            }
+            catch(Exception e) {
+                return null;
+            }
+        }
+    }
+
+
     public long insertInformation(Information information) {
         ContentValues cv = new ContentValues();
         cv.put(INFORMATION_NAME, information.getName());
         cv.put(INFORMATION_SURNAME, information.getSurname());
         cv.put(INFORMATION_CF, information.getCF());
-        cv.put(INFORMATION_ANNI, information.getAnni());
+        cv.put(INFORMATION_DATE_OF_BIRTH, information.getDate_of_birth());
         cv.put(INFORMATION_TELEPHONE, information.getTelephone());
         cv.put(INFORMATION_CONTACT1, information.getContact1());
         cv.put(INFORMATION_CONTACT2, information.getContact2());
@@ -204,7 +257,7 @@ public class MyEmergencyDB {
         cv.put(INFORMATION_NAME, information.getName());
         cv.put(INFORMATION_SURNAME, information.getSurname());
         cv.put(INFORMATION_CF, information.getCF());
-        cv.put(INFORMATION_ANNI, information.getAnni());
+        cv.put(INFORMATION_DATE_OF_BIRTH , information.getDate_of_birth());
         cv.put(INFORMATION_TELEPHONE, information.getTelephone());
         cv.put(INFORMATION_CONTACT1, information.getContact1());
         cv.put(INFORMATION_CONTACT2, information.getContact2());
@@ -230,5 +283,16 @@ public class MyEmergencyDB {
         this.closeDB();
 
         return rowCount;
+    }
+
+    public boolean testNotEmpty() {
+        openReadableDB();
+        Cursor cursor = db.query(INFORMATION_TABLE,
+                null, null, null, null, null, null);
+        if (cursor == null || cursor.getCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

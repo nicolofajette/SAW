@@ -10,12 +10,14 @@
         <activity android:name=".InformationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.nick.myemergency.AddEditActivity" >
-        </activity>
+        <activity android:name="com.example.nick.myemergency.AddEditActivity" ></activity>
+        <activity android:name="com.example.nick.myemergency.ProblemsActivity"></activity>
     </application>
+
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_SMS"></uses-permission>
 </manifest>

@@ -35,7 +35,11 @@
         android:id="@+id/telephoneEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/information_telephone_hint" />
+        android:hint="@string/information_telephone_hint"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
     <EditText
         android:id="@+id/contact1EditText"

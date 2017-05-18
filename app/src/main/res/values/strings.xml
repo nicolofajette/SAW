@@ -10,7 +10,7 @@
     <string name="information_name_hint">Name</string>
     <string name="information_surname_hint">Surname</string>
     <string name="information_CF_hint">CF</string>
-    <string name="information_anni_hint">Anni</string>
+    <string name="information_anni_hint">Data di nascita</string>
     <string name="information_telephone_hint">Telephone</string>
     <string name="information_contact1_hint">Contact1</string>
     <string name="information_contact2_hint">Contact2</string>
@@ -21,5 +21,6 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="invia">Invia</string>
 
 </resources>

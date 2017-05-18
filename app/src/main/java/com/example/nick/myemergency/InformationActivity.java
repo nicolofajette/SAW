@@ -16,21 +16,44 @@ public class InformationActivity extends FragmentActivity {
     TabManager tabManager;
     MyEmergencyDB db;
 
+    boolean firstTime = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
+
+        // get database
+        db = new MyEmergencyDB(getApplicationContext());
+
+        if (!db.testNotEmpty() && firstTime) {
+            firstTime = false;
+            Intent intent = new Intent(this, AddEditActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("editMode", false);
+            intent.putExtra("firsTime", true);
+            startActivity(intent);
+        }
 
         // get tab manager
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
         tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
 
-        // get database
-        db = new MyEmergencyDB(getApplicationContext());
+
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("Informazioni");
         tabSpec.setIndicator("Informazioni");
         tabManager.addTab(tabSpec, InformationFragment.class, null);
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        if (!db.testNotEmpty()) {
+            Intent intent = new Intent(this, AddEditActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     @Override
@@ -44,6 +67,8 @@ public class InformationActivity extends FragmentActivity {
         switch (item.getItemId()){
             case R.id.menuAddTask:
                 Intent intent = new Intent(this, AddEditActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("editMode", false);
                 startActivity(intent);
                 break;
             case R.id.menuDelete:

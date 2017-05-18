@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +27,7 @@ public class AddEditActivity extends Activity
 
     private MyEmergencyDB db;
     private boolean editMode;
-    private String currentInformationName = "";
+    private boolean firstTime;
     private Information information;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,17 @@ public class AddEditActivity extends Activity
         // get edit mode from intent
         Intent intent = getIntent();
         editMode = intent.getBooleanExtra("editMode", false);
+        firstTime = intent.getBooleanExtra("firstTime", false);
+
+        String telephoneNumber = getMyPhoneNumber();
+        if (telephoneNumber.equals("error")) {
+            telephoneEditText.setClickable(true);
+            telephoneEditText.setCursorVisible(true);
+            telephoneEditText.setFocusable(true);
+            telephoneEditText.setFocusableInTouchMode(true);
+        } else {
+            telephoneEditText.setText(getMy10DigitPhoneNumber());
+        }
 
         // if editing
         if (editMode) {
@@ -68,7 +80,7 @@ public class AddEditActivity extends Activity
             nameEditText.setText(information.getName());
             surnameEditText.setText(information.getSurname());
             CFEditText.setText(information.getCF());
-            anniEditText.setText(information.getAnni());
+            anniEditText.setText(information.getDate_of_birth());
             telephoneEditText.setText(information.getTelephone());
             contact1EditText.setText(information.getContact1());
             contact2EditText.setText(information.getContact2());
@@ -89,7 +101,9 @@ public class AddEditActivity extends Activity
                 this.finish();
                 break;
             case R.id.menuCancel:
-                this.finish();
+                if (!firstTime) {
+                    this.finish();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -100,7 +114,7 @@ public class AddEditActivity extends Activity
         String name = nameEditText.getText().toString();
         String surname = surnameEditText.getText().toString();
         String CF = CFEditText.getText().toString();
-        String anni = anniEditText.getText().toString();
+        String date_of_birth = anniEditText.getText().toString();
         String telephone = telephoneEditText.getText().toString();
         String contact1 = contact1EditText.getText().toString();
         String contact2 = contact2EditText.getText().toString();
@@ -119,7 +133,7 @@ public class AddEditActivity extends Activity
         information.setName(name);
         information.setSurname(surname);
         information.setCF(CF);
-        information.setAnni(anni);
+        information.setDate_of_birth(date_of_birth);
         information.setTelephone(telephone);
         information.setContact1(contact1);
         information.setContact2(contact2);
@@ -148,5 +162,21 @@ public class AddEditActivity extends Activity
             return false;
         }
         return false;
+    }
+
+    private String getMyPhoneNumber(){
+        TelephonyManager mTelephonyMgr;
+        mTelephonyMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String number = mTelephonyMgr.getLine1Number();
+        if (mTelephonyMgr.getLine1Number().equals("") || mTelephonyMgr.getLine1Number()==null) {
+            return "error";
+        } else {
+            return mTelephonyMgr.getLine1Number();
+        }
+    }
+
+    private String getMy10DigitPhoneNumber(){
+        String s = getMyPhoneNumber();
+        return s.substring(2);
     }
 }

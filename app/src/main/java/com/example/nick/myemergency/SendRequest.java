@@ -37,8 +37,8 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
         HashMap<String, String> postDataParams = params[0];
         try{
             url = new URL(URL_STRING);
-            //HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            //HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
