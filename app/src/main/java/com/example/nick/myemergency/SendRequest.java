@@ -3,6 +3,7 @@ package com.example.nick.myemergency;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -27,7 +28,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String> {
     EmergencyRequest request;
-    private static String URL_STRING = "miosito.it";
+    private static String URL_STRING = "http://webdev.dibris.unige.it/~S4078757/PAA/emergencyHandler.php";
 
     @Override
     protected String doInBackground(HashMap<String, String>... params){
@@ -63,7 +64,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             Log.e("CONN_ERR", e.toString());
             return "Errore: " + e.toString();    //Restituisco l'errore ricevuto
         }
-        return "Success";
+        return response;
         /*try {
             URL url = new URL(URL_STRING);  //Oggetto URL che rappresenta l'indirizzo
             HttpURLConnection client = (HttpURLConnection) url.openConnection();
@@ -102,10 +103,11 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
 
     protected void onPostExecute(String result){
         //Inserire cosa fare dopo l'invio della richiesta di soccorso
-        if(result.equals("Success")){
+        /*if(result.equals("Success")){
             //Invio richiesta avvenuta con successo
         }else{
             //Errore
-        }
+        }*/
+        Log.d("Esito connessione", result);
     }
 }
