@@ -2,7 +2,7 @@
 
     <string name="app_name">Information</string>
     
-    <!-- task list screen -->
+    <!-- information screen -->
     <string name="information_name">Name</string>
     <string name="information_surname">Surname</string>
     
@@ -21,6 +21,9 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="invia">Invia</string>
+
+    <!-- problems activity -->
+    <string name="titleTextView_text">Inserisca le informazioni per il soccorso</string>string>
+    <string name="invia_comunque">Invia comunque</string>
 
 </resources>

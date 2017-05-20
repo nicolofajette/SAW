@@ -76,14 +76,12 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
                 db.updateInformation(information);
                 break;
             default:
-                /*Intent intent = new Intent(context, AddEditActivity.class);
+                Intent intent = new Intent(context, ProblemsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("informationId", information.getId());
-                intent.putExtra("editMode", true);
-                context.startActivity(intent);*/
-                HashMap<String, String> hash = new HashMap<String, String>();
+                context.startActivity(intent);
+                /*HashMap<String, String> hash = new HashMap<String, String>();
                 hash.put("pippo","franco");
-                new SendRequest().execute(hash);
+                new SendRequest().execute(hash);*/
                 break;
         }
     }

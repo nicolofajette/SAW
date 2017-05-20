@@ -100,10 +100,11 @@ public class MyEmergencyDB {
             db.execSQL("INSERT INTO problems VALUES (3, 'non cosciente')");
             db.execSQL("INSERT INTO problems VALUES (4, 'non risponde')");
             db.execSQL("INSERT INTO problems VALUES (5, 'emorragia')");
-            db.execSQL("INSERT INTO problems VALUES (6, 'frattura')");
-            db.execSQL("INSERT INTO problems VALUES (7, 'incidente stradale')");
-            db.execSQL("INSERT INTO problems VALUES (8, 'incidente casalingo')");
+            db.execSQL("INSERT INTO problems VALUES (6, 'ustione')");
+            db.execSQL("INSERT INTO problems VALUES (7, 'frattura')");
+            db.execSQL("INSERT INTO problems VALUES (8, 'incidente stradale')");
             db.execSQL("INSERT INTO problems VALUES (9, 'incidente sul lavoro')");
+            db.execSQL("INSERT INTO problems VALUES (10, 'incidente casalingo')");
         }
 
         @Override
