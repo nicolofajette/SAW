@@ -13,9 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class ProblemsActivity extends Activity {
+    private static String FILENAME = "response_temp.txt";   //Nome file in cui salvare temporaneamente la risposta XML dal server
 
     private CheckBox checkBox1;
     private CheckBox checkBox2;
@@ -86,9 +88,12 @@ public class ProblemsActivity extends Activity {
             textViews[i].setText(problem.getName());
             i++;
         }
+
         /*sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HashMap<String, String> emergenza;  //Deve contenere una coppia chiave valore dei dati da passare in post.
+                new SendRequest(getApplicationContext(), FILENAME).execute(emergenza);
                 this.finish();
             }
         });*/

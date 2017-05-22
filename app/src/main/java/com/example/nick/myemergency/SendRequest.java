@@ -7,7 +7,9 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -29,6 +31,13 @@ import javax.net.ssl.HttpsURLConnection;
 public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String> {
     EmergencyRequest request;
     private static String URL_STRING = "http://webdev.dibris.unige.it/~S4078757/PAA/emergencyHandler.php";
+    private String filename;
+    Context context;
+
+    public SendRequest(Context context, String filename){
+        this.context = context;
+        this.filename = filename;
+    }
 
     @Override
     protected String doInBackground(HashMap<String, String>... params){
@@ -53,36 +62,28 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             int responseCode = conn.getResponseCode();
             if(responseCode == HttpURLConnection.HTTP_OK){
                 String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                FileOutputStream out = context.openFileOutput(filename, Context.MODE_PRIVATE);
+                InputStream in = conn.getInputStream();
+                byte[] buffer = new byte[1024];
+                int bytesRead = in.read(buffer);
+                while(bytesRead != -1){
+                    out.write(buffer, 0, bytesRead);
+                    bytesRead = in.read(buffer);
+                }
+                out.close();
+                in.close();
+                /*BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while((line = br.readLine()) != null){
                     response += line;
-                }
+                }*/
+                return "Success";
             }else{
-                response = "";
+                return "HTTP err";
             }
         } catch (Exception e){
             Log.e("CONN_ERR", e.toString());
             return "Errore: " + e.toString();    //Restituisco l'errore ricevuto
         }
-        return response;
-        /*try {
-            URL url = new URL(URL_STRING);  //Oggetto URL che rappresenta l'indirizzo
-            HttpURLConnection client = (HttpURLConnection) url.openConnection();
-            String datiPost = URLEncoder.encode("nome", "UTF-8") + "=" + URLEncoder.encode(request.nome, "UTF-8");
-            client.setDoOutput(true);   //Per l'invio
-            client.setChunkedStreamingMode(0);  //Ottimizzo gestione buffer memorizzando temporaneamente risposte dal server
-            //Scrivo i dati nello stream di uscita
-            OutputStreamWriter wr = new OutputStreamWriter(client.getOutputStream());
-            wr.write(datiPost);
-            wr.flush();
-        } catch (UnsupportedEncodingException e) {
-            Log.e("SendRequest", "UnsupportedEncodingException");
-            return "Fail";
-        }catch (IOException e){
-            Log.e("SendRequest", e.toString());
-            return "Fail";
-        }
-        return "Success";*/
     }
 
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException{
@@ -109,5 +110,6 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             //Errore
         }*/
         Log.d("Esito connessione", result);
+        new FetchResponse(context).execute(filename);
     }
 }
