@@ -14,9 +14,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
-/**
- * Created by Nick on 22/05/2017.
- */
 
 public class FetchResponse extends AsyncTask<String, Void, String>{
     private Context context;

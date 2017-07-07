@@ -5,10 +5,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 
-/**
- * Created by Nick on 22/05/2017.
- */
-
 public class XMLHandler extends DefaultHandler{
     private long callId;
 

@@ -1,11 +1,15 @@
 package com.example.nick.myemergency;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.google.tabmanager.TabManager;
 
@@ -16,8 +20,6 @@ public class InformationActivity extends FragmentActivity {
     TabManager tabManager;
     MyEmergencyDB db;
 
-    boolean firstTime = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,15 +27,6 @@ public class InformationActivity extends FragmentActivity {
 
         // get database
         db = new MyEmergencyDB(getApplicationContext());
-
-        if (!db.testNotEmpty() && firstTime) {
-            firstTime = false;
-            Intent intent = new Intent(this, AddEditActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("editMode", false);
-            intent.putExtra("firsTime", true);
-            startActivity(intent);
-        }
 
         // get tab manager
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -47,13 +40,13 @@ public class InformationActivity extends FragmentActivity {
     }
 
     @Override
+    public void onPause () {
+        super.onPause();
+    }
+
+    @Override
     public void onResume () {
         super.onResume();
-        if (!db.testNotEmpty()) {
-            Intent intent = new Intent(this, AddEditActivity.class);
-            startActivity(intent);
-        }
-
     }
 
     @Override
@@ -69,6 +62,7 @@ public class InformationActivity extends FragmentActivity {
                 Intent intent = new Intent(this, AddEditActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("editMode", false);
+                intent.putExtra("first", false);
                 startActivity(intent);
                 break;
             case R.id.menuDelete:
@@ -77,7 +71,8 @@ public class InformationActivity extends FragmentActivity {
                 for (Information information : informations){
                     if (information.getCancelDateMillis() > 0){
                         information.setHidden(Information.TRUE);
-                        db.updateInformation(information);
+                        //db.updateInformation(information);
+                        db.deleteInformation(information);
                     }
                 }
                 // Refresh list

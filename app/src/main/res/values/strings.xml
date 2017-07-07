@@ -24,6 +24,16 @@
 
     <!-- problems activity -->
     <string name="titleTextView_text">Inserisca le informazioni per il soccorso</string>string>
-    <string name="invia_comunque">Invia comunque</string>
+    <string name="invia">Invia</string>
+
+    <string name="hint_name">Nome</string>
+    <string name="hint_surname">Cognome</string>
+    <string name="hint_CF">Codice Fiscale</string>
+    <string name="hint_data">Data di nascita</string>
+    <string name="hint_telephone">Telefono</string>
+    <string name="hint_contact1">Contatto 1</string>
+    <string name="hint_contact2">Contatto2</string>
+
+    <string name="btn_sign_up">Sign Up</string>
 
 </resources>

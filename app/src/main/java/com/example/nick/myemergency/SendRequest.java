@@ -24,9 +24,6 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/**
- * Created by Nick on 05/05/2017.
- */
 
 public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String> {
     EmergencyRequest request;

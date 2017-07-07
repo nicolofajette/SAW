@@ -238,7 +238,7 @@ public class MyEmergencyDB {
         ContentValues cv = new ContentValues();
         cv.put(INFORMATION_NAME, information.getName());
         cv.put(INFORMATION_SURNAME, information.getSurname());
-        cv.put(INFORMATION_CF, information.getCF());
+        cv.put(INFORMATION_CF, information.getCodiceFiscale());
         cv.put(INFORMATION_DATE_OF_BIRTH, information.getDate_of_birth());
         cv.put(INFORMATION_TELEPHONE, information.getTelephone());
         cv.put(INFORMATION_CONTACT1, information.getContact1());
@@ -257,7 +257,7 @@ public class MyEmergencyDB {
         ContentValues cv = new ContentValues();
         cv.put(INFORMATION_NAME, information.getName());
         cv.put(INFORMATION_SURNAME, information.getSurname());
-        cv.put(INFORMATION_CF, information.getCF());
+        cv.put(INFORMATION_CF, information.getCodiceFiscale());
         cv.put(INFORMATION_DATE_OF_BIRTH , information.getDate_of_birth());
         cv.put(INFORMATION_TELEPHONE, information.getTelephone());
         cv.put(INFORMATION_CONTACT1, information.getContact1());
@@ -275,9 +275,9 @@ public class MyEmergencyDB {
         return rowCount;
     }
 
-    public int deleteInformation(long id) {
+    public int deleteInformation(Information information) {
         String where = INFORMATION_ID + "= ?";
-        String[] whereArgs = { String.valueOf(id) };
+        String[] whereArgs = { String.valueOf(information.getId()) };
 
         this.openWriteableDB();
         int rowCount = db.delete(INFORMATION_TABLE, where, whereArgs);

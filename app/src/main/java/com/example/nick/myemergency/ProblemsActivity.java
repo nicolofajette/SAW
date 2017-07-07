@@ -89,6 +89,7 @@ public class ProblemsActivity extends Activity {
             i++;
         }
 
+
         /*sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

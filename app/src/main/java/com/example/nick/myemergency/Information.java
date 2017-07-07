@@ -5,7 +5,7 @@ public class Information {
     private long id;
     private String name;
     private String surname;
-    private String CF;
+    private String codiceFiscale;
     private String date_of_birth;
     private String telephone;
     private String contact1;
@@ -23,10 +23,10 @@ public class Information {
         hidden = FALSE;
     }
 
-    public Information(String name, String surname, String CF, String date_of_birth, String telephone, String contact1, String contact2, String cancel, String hidden) {
+    public Information(String name, String surname, String codiceFiscale, String date_of_birth, String telephone, String contact1, String contact2, String cancel, String hidden) {
         this.name = name;
         this.surname = surname;
-        this.CF = CF;
+        this.codiceFiscale = codiceFiscale;
         this.date_of_birth = date_of_birth;
         this.telephone = telephone;
         this.contact1 = contact1;
@@ -35,11 +35,11 @@ public class Information {
         this.hidden = hidden;
     }
 
-    public Information(int id, String name, String surname, String CF, String date_of_birth, String telephone, String contact1, String contact2, String cancel, String hidden) {
+    public Information(int id, String name, String surname, String codiceFiscale, String date_of_birth, String telephone, String contact1, String contact2, String cancel, String hidden) {
         this.id = id;
         this.name = name;
         this.surname = surname;
-        this.CF = CF;
+        this.codiceFiscale = codiceFiscale;
         this.date_of_birth = date_of_birth;
         this.telephone = telephone;
         this.contact1 = contact1;
@@ -73,13 +73,9 @@ public class Information {
         return surname;
     }
 
-    public void setCF(String CF) {
-        this.CF = CF;
-    }
+    public void setCodiceFiscale(String codiceFiscale) { this.codiceFiscale = codiceFiscale; }
 
-    public String getCF() {
-        return CF;
-    }
+    public String getCodiceFiscale() { return codiceFiscale; }
 
     public void setDate_of_birth(String date_of_birth) {
         this.date_of_birth = date_of_birth;

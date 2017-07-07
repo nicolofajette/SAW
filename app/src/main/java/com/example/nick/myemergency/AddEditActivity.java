@@ -6,17 +6,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class AddEditActivity extends Activity
         implements OnKeyListener {
 
+    private TextView textViewInfo;
     private EditText nameEditText;
     private EditText surnameEditText;
     private EditText CFEditText;
@@ -35,6 +44,7 @@ public class AddEditActivity extends Activity
         setContentView(R.layout.activity_add_edit);
 
         // get references to widgets
+        textViewInfo = (TextView) findViewById(R.id.textViewInfo);
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         surnameEditText = (EditText) findViewById(R.id.surnameEditText);
         CFEditText = (EditText) findViewById(R.id.CFEditText);
@@ -52,13 +62,130 @@ public class AddEditActivity extends Activity
         contact1EditText.setOnKeyListener(this);
         contact2EditText.setOnKeyListener(this);
 
+        nameEditText.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (nameEditText.getText().toString().length() <= 0) {
+                    nameEditText.setError("Questo campo non può essere vuoto");
+                } else {
+                    nameEditText.setError(null);
+                }
+            }
+        });
+
+        surnameEditText.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (surnameEditText.getText().toString().length() <= 0) {
+                    surnameEditText.setError("Questo campo non può essere vuoto");
+                } else {
+                   surnameEditText.setError(null);
+                }
+            }
+        });
+
+        CFEditText.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                String pattern = "^[A-Z]{6}[0-9]{2}[ABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$";
+                Pattern regEx = Pattern.compile(pattern);
+                Matcher m = regEx.matcher(CFEditText.getText().toString());
+                if (CFEditText.getText().toString().length() <= 0) {
+                    CFEditText.setError("Questo campo non può essere vuoto");
+                } else if (!m.matches()) {
+                    CFEditText.setError("CF non rispettato");
+                } else {
+                    CFEditText.setError(null);
+                }
+            }
+        });
+
+        anniEditText.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                String pattern = "((((0[1-9]|1[0-9]|2[0-8])(\\/)(0[1-9]|1[0-2]))|((2[9]|3[0])(\\/)(0[469]|11))|((3[1])(\\/)(0[13578]|1[02])))(\\/)(19([0-9][0-9])|20(0[0-9]|1[0-5])))|((29)(\\/)(02)(\\/)(19(0[048]|1[26]|2[048]|3[26]|4[048]|5[26]|6[048]|7[26]|8[048]|9[26])|20(0[048]|1[26])))";
+                Pattern regEx = Pattern.compile(pattern);
+                Matcher m = regEx.matcher(anniEditText.getText().toString());
+                if (anniEditText.getText().toString().length() <= 0) {
+                    anniEditText.setError("Questo campo non può essere vuoto");
+                } else if (!m.matches()) {
+                    anniEditText.setError("data non rispettata");
+                } else {
+                    anniEditText.setError(null);
+                }
+            }
+        });
+
+        telephoneEditText.addTextChangedListener(new TextWatcher()  {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)  {
+                if (telephoneEditText.getText().toString().length() <= 0) {
+                    telephoneEditText.setError("Questo campo non può essere vuoto");
+                } else if (telephoneEditText.getText().toString().length() >10) {
+                    telephoneEditText.setError("formato numero telefonico non rispettato");
+                } else {
+                    telephoneEditText.setError(null);
+                }
+            }
+        });
+
         // get the database object
         db = new MyEmergencyDB(this);
 
         // get edit mode from intent
         Intent intent = getIntent();
         editMode = intent.getBooleanExtra("editMode", false);
-        firstTime = intent.getBooleanExtra("firstTime", false);
+        firstTime = intent.getBooleanExtra("first", true);
+        if (firstTime == true) {
+            textViewInfo.setText("Inserisci i tuoi dati per poterli avere a disposizione nel momento del bisogno");
+        } else {
+            textViewInfo.setText("Inserisci i dati di qualcuno che potrebbe avere bisogno");
+        }
 
         String telephoneNumber = getMyPhoneNumber();
         if (telephoneNumber.equals("error")) {
@@ -79,7 +206,7 @@ public class AddEditActivity extends Activity
             // update UI with task
             nameEditText.setText(information.getName());
             surnameEditText.setText(information.getSurname());
-            CFEditText.setText(information.getCF());
+            CFEditText.setText(information.getCodiceFiscale());
             anniEditText.setText(information.getDate_of_birth());
             telephoneEditText.setText(information.getTelephone());
             contact1EditText.setText(information.getContact1());
@@ -97,8 +224,43 @@ public class AddEditActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menuSave:
-                saveToDB();
-                this.finish();
+                String name = nameEditText.getText().toString();
+                String surname = surnameEditText.getText().toString();
+                String CF = CFEditText.getText().toString();
+                String date_of_birth = anniEditText.getText().toString();
+                String telephone = telephoneEditText.getText().toString();
+
+                // if no informations, exit method
+
+                if (name == null || name.equals("")) {
+                    nameEditText.setError("Questo campo non può essere vuoto");
+                }
+                if (surname == null || surname.equals("")) {
+                    surnameEditText.setError("Questo campo non può essere vuoto");
+                }
+                if (CF == null || CF.equals("")) {
+                    CFEditText.setError("Questo campo non può essere vuoto");
+                }
+                if (date_of_birth == null || date_of_birth.equals("")) {
+                    anniEditText.setError("Questo campo non può essere vuoto");
+                }
+                if (telephone == null || telephone.equals("")) {
+                    telephoneEditText.setError("Questo campo non può essere vuoto");
+                }
+                if ((nameEditText.getError() == null && nameEditText.getText().length() != 0) &&
+                        (surnameEditText.getError() == null && surnameEditText.getText().length() != 0) &&
+                        (CFEditText.getError() == null && CFEditText.getText().length() != 0) &&
+                        (anniEditText.getError() == null && anniEditText.getText().length() != 0) &&
+                        (telephoneEditText.getError() == null && telephoneEditText.getText().length() != 0)) {
+                        saveToDB();
+                        if (!firstTime) {
+                            this.finish();
+                        } else {
+                            Intent intent = new Intent(this, fistLaunch.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                }
                 break;
             case R.id.menuCancel:
                 if (!firstTime) {
@@ -119,11 +281,6 @@ public class AddEditActivity extends Activity
         String contact1 = contact1EditText.getText().toString();
         String contact2 = contact2EditText.getText().toString();
 
-        // if no information name, exit method
-        if (name == null || name.equals("")) {
-            return;
-        }
-
         // if add mode, create new information
         if (!editMode) {
             information = new Information();
@@ -132,7 +289,7 @@ public class AddEditActivity extends Activity
         // put data in information
         information.setName(name);
         information.setSurname(surname);
-        information.setCF(CF);
+        information.setCodiceFiscale(CF);
         information.setDate_of_birth(date_of_birth);
         information.setTelephone(telephone);
         information.setContact1(contact1);
@@ -157,10 +314,10 @@ public class AddEditActivity extends Activity
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             return true;
         }
-        else if (keyCode == KeyEvent.KEYCODE_BACK) {
+        /*else if (keyCode == KeyEvent.KEYCODE_BACK) {
             saveToDB();
             return false;
-        }
+        }*/
         return false;
     }
 
@@ -178,5 +335,9 @@ public class AddEditActivity extends Activity
     private String getMy10DigitPhoneNumber(){
         String s = getMyPhoneNumber();
         return s.substring(2);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
