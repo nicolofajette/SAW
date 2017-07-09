@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -145,7 +146,7 @@ public class AddEditActivity extends Activity
                 if (anniEditText.getText().toString().length() <= 0) {
                     anniEditText.setError("Questo campo non può essere vuoto");
                 } else if (!m.matches()) {
-                    anniEditText.setError("data non rispettata");
+                    anniEditText.setError("Formato da rispettare gg/mm/aaaa");
                 } else {
                     anniEditText.setError(null);
                 }
@@ -181,10 +182,14 @@ public class AddEditActivity extends Activity
         Intent intent = getIntent();
         editMode = intent.getBooleanExtra("editMode", false);
         firstTime = intent.getBooleanExtra("first", true);
-        if (firstTime == true) {
-            textViewInfo.setText("Inserisci i tuoi dati per poterli avere a disposizione nel momento del bisogno");
+        if (editMode == false) {
+            if (firstTime == true) {
+                textViewInfo.setText("Inserisci i tuoi dati per poterli avere a disposizione nel momento del bisogno");
+            } else {
+                textViewInfo.setText("Inserisci i dati di qualcuno che potrebbe avere bisogno");
+            }
         } else {
-            textViewInfo.setText("Inserisci i dati di qualcuno che potrebbe avere bisogno");
+            textViewInfo.setText("Aggiornamento dei dati");
         }
 
         String telephoneNumber = getMyPhoneNumber();
@@ -263,7 +268,7 @@ public class AddEditActivity extends Activity
                 }
                 break;
             case R.id.menuCancel:
-                if (!firstTime) {
+                if (!firstTime || editMode) {
                     this.finish();
                 }
                 break;

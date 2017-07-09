@@ -46,6 +46,7 @@ public class ProblemsActivity extends Activity {
 
     // get edit mode from intent
     Intent intent = getIntent();
+    long informationId = intent.getLongExtra("informationId", -1);
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

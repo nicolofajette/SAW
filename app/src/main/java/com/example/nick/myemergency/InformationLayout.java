@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-public class InformationLayout extends RelativeLayout implements View.OnClickListener {
+public class InformationLayout extends RelativeLayout implements View.OnClickListener, View.OnLongClickListener {
 
     private CheckBox cancelCheckBox;
     private TextView nameTextView;
@@ -42,9 +42,14 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
         nameTextView = (TextView) findViewById(R.id.nameTextView);
         surnameTextView = (TextView) findViewById(R.id.surnameTextView);
 
+        if(i.getId() == 1) {
+            cancelCheckBox.setVisibility(View.INVISIBLE);
+        }
+
         // set listeners
         cancelCheckBox.setOnClickListener(this);
         this.setOnClickListener(this);
+        this.setOnLongClickListener(this);
 
         // set task data on widgets
         setInformation(i);
@@ -77,6 +82,7 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
                 break;
             default:
                 Intent intent = new Intent(context, ProblemsActivity.class);
+                intent.putExtra("informationId", information.getId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 /*HashMap<String, String> hash = new HashMap<String, String>();
@@ -84,6 +90,20 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
                 new SendRequest().execute(hash);*/
                 break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        switch (v.getId()) {
+            default:
+                Intent intent = new Intent(context, AddEditActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("editMode", true);
+                intent.putExtra("informationId", information.getId());
+                context.startActivity(intent);
+                break;
+        }
+        return true;
     }
 }
 
