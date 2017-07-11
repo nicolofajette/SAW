@@ -83,6 +83,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
         }
     }
 
+    //Funzione che a partire dall'hash map dei parametri li converte in una stringa per la richiesta post
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException{
         StringBuilder result = new StringBuilder();
         boolean first = true;

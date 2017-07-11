@@ -53,7 +53,7 @@ public class ProblemsActivity extends Activity {
         setContentView(R.layout.problems);
 
         // get references to widgets
-        CheckBox[] checkBoxs = new CheckBox[10];
+        final CheckBox[] checkBoxs = new CheckBox[10];
         checkBoxs[0] = (CheckBox) findViewById(R.id.CheckBox1);
         checkBoxs[1] = (CheckBox) findViewById(R.id.CheckBox2);
         checkBoxs[2] = (CheckBox) findViewById(R.id.CheckBox3);
@@ -91,13 +91,28 @@ public class ProblemsActivity extends Activity {
         }
 
 
-        /*sendButton.setOnClickListener(new View.OnClickListener() {
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> emergenza;  //Deve contenere una coppia chiave valore dei dati da passare in post.
+                HashMap<String, String> emergenza = new HashMap<String, String>();  //Deve contenere una coppia chiave valore dei dati da passare in post.
+                Information information = db.getInformation(informationId);
+                emergenza.put("nome", information.getName());
+                emergenza.put("cognome", information.getSurname());
+                emergenza.put("data_nascita", information.getDate_of_birth());
+                emergenza.put("codice_fiscale", information.getCodiceFiscale());
+                emergenza.put("cellulare", information.getTelephone());
+                //emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
+                Iterator iterator = problems.iterator();
+                int i = 0;
+                while(iterator.hasNext()){  //TODO: valutare se modificare sostituendo con xml element
+                    Problem problem = (Problem) iterator.next();
+                    if(checkBoxs[i].isChecked()){
+                        emergenza.put(problem.getName(), "true");
+                    }
+                    i++;
+                }
                 new SendRequest(getApplicationContext(), FILENAME).execute(emergenza);
-                this.finish();
             }
-        });*/
+        });
     }
 }
