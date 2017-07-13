@@ -260,7 +260,7 @@ public class AddEditActivity extends Activity
                         if (!firstTime) {
                             this.finish();
                         } else {
-                            Intent intent = new Intent(this, fistLaunch.class);
+                            Intent intent = new Intent(this, FistLaunch.class);
                             startActivity(intent);
                             finish();
                         }
