@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;

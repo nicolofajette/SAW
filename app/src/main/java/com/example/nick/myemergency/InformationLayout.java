@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -82,8 +83,8 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
                 break;
             default:
                 Intent intent = new Intent(context, ProblemsActivity.class);
-                intent.putExtra("informationId", information.getId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("informationId", information.getId());
                 context.startActivity(intent);
                 /*HashMap<String, String> hash = new HashMap<String, String>();
                 hash.put("pippo","franco");

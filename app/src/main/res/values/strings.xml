@@ -12,6 +12,7 @@
     <string name="hint_CF">Codice Fiscale</string>
     <string name="hint_data">Data di nascita</string>
     <string name="hint_telephone">Telefono</string>
+    <string name="contatti_utili">Contatti utili</string>
     <string name="hint_contact1">Contatto 1</string>
     <string name="hint_contact2">Contatto2</string>
     
@@ -25,6 +26,9 @@
     <string name="titleTextView_text">Inserisca le informazioni per il soccorso</string>string>
     <string name="invia">Invia</string>
 
-    <string name="btn_sign_up">Sign Up</string>
+    <!-- event activity -->
+    <string name="event_type">Tipo</string>
+    <string name="event_name">Nome</string>
+    <string name="event_time">Ora</string>
 
 </resources>
