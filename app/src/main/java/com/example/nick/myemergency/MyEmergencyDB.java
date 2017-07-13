@@ -58,6 +58,21 @@ public class MyEmergencyDB {
     public static final String PROBLEMS_NAME ="problem_name";
     public static final int    PROBLEMS_NAME_COL = 1;
 
+    //event table constants
+    public static final String EVENT_TABLE = "events";
+
+    public static final String EVENT_ID = "id_e";
+    public static final int    EVENT_ID_COL = 0;
+
+    public static final String EVENT_PERSON ="event_person";
+    public static final int    EVENT_PERSON_COL = 1;
+
+    public static final String EVENT_TYPE ="event_type";
+    public static final int    EVENT_TYPE_COL = 2;
+
+    public static final String EVENT_TIME ="event_time";
+    public static final int    EVENT_TIME_COL = 3;
+
     // CREATE and DROP TABLE statements
     public static final String CREATE_INFORMATION_TABLE =
             "CREATE TABLE " + INFORMATION_TABLE + " (" +
@@ -71,6 +86,13 @@ public class MyEmergencyDB {
                     INFORMATION_CONTACT2    + " TEXT," +
                     INFORMATION_CANCEL  + " TEXT, " +
                     TASK_HIDDEN     + " TEXT)";
+
+    public static final String CREATE_EVENT_TABLE =
+            "CREATE TABLE " + EVENT_TABLE + " (" +
+                    EVENT_ID         + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    EVENT_TYPE      + " TEXT, " +
+                    EVENT_PERSON     + " TEXT, " +
+                    EVENT_TIME       + " TEXT)";
 
     public static final String CREATE_PROBLEMS_TABLE =
             "CREATE TABLE " + PROBLEMS_TABLE + " (" +
@@ -93,6 +115,7 @@ public class MyEmergencyDB {
             // create tables
             db.execSQL(CREATE_INFORMATION_TABLE);
             db.execSQL(CREATE_PROBLEMS_TABLE);
+            db.execSQL(CREATE_EVENT_TABLE);
 
             // insert problems
             db.execSQL("INSERT INTO problems VALUES (1, 'infarto')");
@@ -295,6 +318,56 @@ public class MyEmergencyDB {
         } else {
             return true;
         }
+    }
+
+    public ArrayList<Evento> getEvents() {
+        ArrayList<Evento> events = new ArrayList<Evento>();
+        openReadableDB();
+        Cursor  cursor = db.rawQuery("SELECT * FROM events",null);
+        while (cursor.moveToNext()) {
+            events.add(getEventFromCursor(cursor));
+        }
+        cursor.close();
+        closeDB();
+        return events;
+    }
+
+    private static Evento getEventFromCursor(Cursor cursor) {
+        if (cursor == null || cursor.getCount() == 0){
+            return null;
+        }
+        else {
+            try {
+                Evento event = new Evento(
+                        cursor.getInt(EVENT_ID_COL),
+                        cursor.getString(EVENT_PERSON_COL),
+                        cursor.getString(EVENT_TYPE_COL),
+                        cursor.getString(EVENT_TIME_COL));
+                return event;
+            }
+            catch(Exception e) {
+                return null;
+            }
+        }
+    }
+
+    public long insertEvent(Evento event) {
+        ContentValues cv = new ContentValues();
+        cv.put(EVENT_PERSON, event.getName());
+        cv.put(EVENT_TYPE, event.getType());
+        cv.put(EVENT_TIME, event.getTime());
+
+        this.openWriteableDB();
+        long rowID = db.insert(EVENT_TABLE, null, cv);
+        this.closeDB();
+
+        return rowID;
+    }
+
+    public void deleteEvents() {
+        openReadableDB();
+        db.execSQL("DELETE FROM "+ EVENT_TABLE);
+        closeDB();
     }
 
 }

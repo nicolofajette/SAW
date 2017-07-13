@@ -1,11 +1,10 @@
 package com.example.nick.myemergency;
 
-import java.util.ArrayList;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,16 +12,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
-public class InformationFragment extends Fragment {
+import java.util.ArrayList;
+
+public class EventFragment extends Fragment {
 
     MyEmergencyDB db;
-    private ListView informationView;
+    private ListView eventView;
 
-    public InformationFragment() {
+    public EventFragment() {
         setHasOptionsMenu(true);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +34,7 @@ public class InformationFragment extends Fragment {
                 container, false);
 
         // get references to widgets
-        informationView = (ListView) view.findViewById (R.id.View);
+        eventView = (ListView) view.findViewById (R.id.View);
         // get database
         db = new MyEmergencyDB(getContext());
 
@@ -53,7 +54,7 @@ public class InformationFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         menu.clear();
-        inflater.inflate(R.menu.activity_task_list,menu);
+        inflater.inflate(R.menu.event_fragment,menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -61,12 +62,13 @@ public class InformationFragment extends Fragment {
         // get task list for current tab from database
         Context context = getActivity().getApplicationContext();
         MyEmergencyDB db = new MyEmergencyDB(context);
-        ArrayList<Information> informations = db.getInformations();
+        ArrayList<Evento> events = db.getEvents();
 
         // create adapter and set it in the ListView widget
-        InformationAdapter adapter = new InformationAdapter(context, informations);
-        informationView.setAdapter(adapter);
+        EventAdapter adapter = new EventAdapter(context, events);
+        eventView.setAdapter(adapter);
     }
+
 
     @Override
     public void onResume() {
@@ -77,23 +79,9 @@ public class InformationFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menuAddTask:
-                Intent intent = new Intent(getContext(), AddEditActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("editMode", false);
-                intent.putExtra("first", false);
-                startActivity(intent);
-                break;
             case R.id.menuDelete:
-                // Hide all tasks marked as cancel
-                ArrayList<Information> informations = db.getInformations();
-                for (Information information : informations){
-                    if (information.getCancelDateMillis() > 0){
-                        information.setHidden(Information.TRUE);
-                        //db.updateInformation(information);
-                        db.deleteInformation(information);
-                    }
-                }
+                // Cancel all events
+                db.deleteEvents();
                 // Refresh list
                 refreshTaskList();
 
@@ -102,3 +90,4 @@ public class InformationFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 }
+

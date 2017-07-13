@@ -19,7 +19,6 @@ public class fistLaunch extends Activity {
         sharedPreferences = getSharedPreferences("ShaPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         boolean  firstTime = sharedPreferences.getBoolean("first", true);
-        Toast.makeText(getApplicationContext(), Boolean.toString(firstTime), Toast.LENGTH_LONG).show();
         if(firstTime || !db.testNotEmpty()) {
             editor.putBoolean("first",false);
             editor.commit();
