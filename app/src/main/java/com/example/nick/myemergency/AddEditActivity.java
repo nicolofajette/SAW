@@ -191,15 +191,15 @@ public class AddEditActivity extends Activity
             textViewInfo.setText("Aggiornamento dei dati");
         }
 
-        String telephoneNumber = getMyPhoneNumber();
-        if (telephoneNumber.equals("error")) {
+        /*String telephoneNumber = getMyPhoneNumber();
+        if (telephoneNumber.equals("error")) {*/
             telephoneEditText.setClickable(true);
             telephoneEditText.setCursorVisible(true);
             telephoneEditText.setFocusable(true);
             telephoneEditText.setFocusableInTouchMode(true);
-        } else {
+        /*} else {
             telephoneEditText.setText(getMy10DigitPhoneNumber());
-        }
+        }*/
 
         // if editing
         if (editMode) {
@@ -260,7 +260,7 @@ public class AddEditActivity extends Activity
                         if (!firstTime) {
                             this.finish();
                         } else {
-                            Intent intent = new Intent(this, fistLaunch.class);
+                            Intent intent = new Intent(this, FistLaunch.class);
                             startActivity(intent);
                             finish();
                         }
@@ -325,7 +325,7 @@ public class AddEditActivity extends Activity
         return false;
     }
 
-    private String getMyPhoneNumber(){
+    /*private String getMyPhoneNumber(){
         TelephonyManager mTelephonyMgr;
         mTelephonyMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         String number = mTelephonyMgr.getLine1Number();
@@ -339,7 +339,7 @@ public class AddEditActivity extends Activity
     private String getMy10DigitPhoneNumber(){
         String s = getMyPhoneNumber();
         return s.substring(2);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

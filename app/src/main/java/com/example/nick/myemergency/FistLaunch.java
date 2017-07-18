@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
-public class fistLaunch extends Activity {
+public class FistLaunch extends Activity {
     SharedPreferences sharedPreferences;
     MyEmergencyDB db;
     @Override

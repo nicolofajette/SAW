@@ -42,6 +42,12 @@ public class InformationActivity extends FragmentActivity {
         tabSpec1.setIndicator("Eventi");
         tabManager.addTab(tabSpec1, EventFragment.class, null);
 
+        Intent intent = getIntent();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.getInt("notifica") == 1) {
+            tabHost.setCurrentTabByTag("Eventi");
+        }
+
         // sets current tab to the last tab opened
         if (savedInstanceState != null) {
             tabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));

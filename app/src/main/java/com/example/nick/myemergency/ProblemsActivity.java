@@ -2,13 +2,17 @@ package com.example.nick.myemergency;
 
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,26 +33,6 @@ public class ProblemsActivity extends Activity {
     private static String FILENAME = "response_temp.txt";   //Nome file in cui salvare temporaneamente la risposta XML dal server
 
     private TextView tittleTextView;
-    private CheckBox checkBox1;
-    private CheckBox checkBox2;
-    private CheckBox checkBox3;
-    private CheckBox checkBox4;
-    private CheckBox checkBox5;
-    private CheckBox checkBox6;
-    private CheckBox checkBox7;
-    private CheckBox checkBox8;
-    private CheckBox checkBox9;
-    private CheckBox checkBox10;
-    private TextView textView1;
-    private TextView textView2;
-    private TextView textView3;
-    private TextView textView4;
-    private TextView textView5;
-    private TextView textView6;
-    private TextView textView7;
-    private TextView textView8;
-    private TextView textView9;
-    private TextView textView10;
     private Button sendButton;
 
     private MyEmergencyDB db;
@@ -100,7 +84,7 @@ public class ProblemsActivity extends Activity {
         checkBoxs[7] = (CheckBox) findViewById(R.id.CheckBox8);
         checkBoxs[8] = (CheckBox) findViewById(R.id.CheckBox9);
         checkBoxs[9] = (CheckBox) findViewById(R.id.CheckBox10);
-        TextView[] textViews = new TextView[10];
+        final TextView[] textViews = new TextView[10];
         textViews[0] = (TextView) findViewById(R.id.TextView1);
         textViews[1] = (TextView) findViewById(R.id.TextView2);
         textViews[2] = (TextView) findViewById(R.id.TextView3);
@@ -126,9 +110,6 @@ public class ProblemsActivity extends Activity {
             i++;
         }
 
-
-
-
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,9 +123,9 @@ public class ProblemsActivity extends Activity {
                 //emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
                 Iterator iterator = problems.iterator();
                 int i = 0;
-                while(iterator.hasNext()){  //TODO: valutare se modificare sostituendo con xml element
+                while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
                     Problem problem = (Problem) iterator.next();
-                    if(checkBoxs[i].isChecked()){
+                    if (checkBoxs[i].isChecked()) {
                         emergenza.put(problem.getName(), "true");
                     }
                     i++;
@@ -152,12 +133,37 @@ public class ProblemsActivity extends Activity {
                 new SendRequest(getApplicationContext(), FILENAME).execute(emergenza);
                 Evento event = new Evento();
                 event.setType("INVIATO");
-                event.setName(information.getName()+" "+information.getSurname());
+                event.setName(information.getName() + " " + information.getSurname());
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                 event.setTime(currentDateTimeString);
                 db.insertEvent(event);
+                sendNotification();
                 ProblemsActivity.this.finish();
             }
         });
+    }
+
+    public void sendNotification() {
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this);
+        mBuilder.setAutoCancel(true);
+
+        //Create the intent that’ll fire when the user taps the notification//
+        Intent intent = new Intent(getApplicationContext(), InformationActivity.class);
+        intent.putExtra("notifica", 1);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+
+        mBuilder.setContentIntent(pendingIntent);
+
+        mBuilder.setSmallIcon(R.drawable.ic_launcher);
+        mBuilder.setContentTitle("Richiesta inviata");
+        mBuilder.setContentText("Le risponderemo al più presto");
+
+        NotificationManager mNotificationManager =
+
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.notify(001, mBuilder.build());
     }
 }
