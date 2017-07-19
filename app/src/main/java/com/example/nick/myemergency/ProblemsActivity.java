@@ -2,30 +2,21 @@ package com.example.nick.myemergency;
 
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -133,40 +124,9 @@ public class ProblemsActivity extends Activity {
                     }
                     i++;
                 }
-                new SendRequest(getApplicationContext(), FILENAME).execute(emergenza);
-                Evento event = new Evento();
-                event.setType("INVIATO");
-                event.setName(information.getName() + " " + information.getSurname());
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                event.setTime(currentDateTimeString);
-                db.insertEvent(event);
-                sendNotification();
+                new SendRequest(getApplicationContext(), FILENAME, information).execute(emergenza);
                 ProblemsActivity.this.finish();
             }
         });
-    }
-
-    public void sendNotification() {
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this);
-        mBuilder.setAutoCancel(true);
-
-        //Create the intent that’ll fire when the user taps the notification//
-        Intent intent = new Intent(getApplicationContext(), InformationActivity.class);
-        intent.putExtra("notifica", 1);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-
-        mBuilder.setContentIntent(pendingIntent);
-
-        mBuilder.setSmallIcon(R.drawable.ic_launcher);
-        mBuilder.setContentTitle("Richiesta inviata");
-        mBuilder.setContentText("Le risponderemo al più presto");
-
-        NotificationManager mNotificationManager =
-
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        mNotificationManager.notify(001, mBuilder.build());
     }
 }
