@@ -33,26 +33,6 @@ public class ProblemsActivity extends Activity {
     private static String FILENAME = "response_temp.txt";   //Nome file in cui salvare temporaneamente la risposta XML dal server
 
     private TextView tittleTextView;
-    private CheckBox checkBox1;
-    private CheckBox checkBox2;
-    private CheckBox checkBox3;
-    private CheckBox checkBox4;
-    private CheckBox checkBox5;
-    private CheckBox checkBox6;
-    private CheckBox checkBox7;
-    private CheckBox checkBox8;
-    private CheckBox checkBox9;
-    private CheckBox checkBox10;
-    private TextView textView1;
-    private TextView textView2;
-    private TextView textView3;
-    private TextView textView4;
-    private TextView textView5;
-    private TextView textView6;
-    private TextView textView7;
-    private TextView textView8;
-    private TextView textView9;
-    private TextView textView10;
     private Button sendButton;
 
     private MyEmergencyDB db;
@@ -104,7 +84,7 @@ public class ProblemsActivity extends Activity {
         checkBoxs[7] = (CheckBox) findViewById(R.id.CheckBox8);
         checkBoxs[8] = (CheckBox) findViewById(R.id.CheckBox9);
         checkBoxs[9] = (CheckBox) findViewById(R.id.CheckBox10);
-        TextView[] textViews = new TextView[10];
+        final TextView[] textViews = new TextView[10];
         textViews[0] = (TextView) findViewById(R.id.TextView1);
         textViews[1] = (TextView) findViewById(R.id.TextView2);
         textViews[2] = (TextView) findViewById(R.id.TextView3);
@@ -129,9 +109,6 @@ public class ProblemsActivity extends Activity {
             textViews[i].setText(problem.getName());
             i++;
         }
-
-
-
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,10 +153,9 @@ public class ProblemsActivity extends Activity {
         mBuilder.setAutoCancel(true);
 
         //Create the intent that’ll fire when the user taps the notification//
-
-        Intent intent = new Intent(getApplicationContext(), InformationActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);  ;
+        Intent intent = new Intent(getApplicationContext(), InformationActivity.class);
         intent.putExtra("notifica", 1);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
         mBuilder.setContentIntent(pendingIntent);
 
