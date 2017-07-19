@@ -143,13 +143,16 @@ public class ProblemsActivity extends Activity {
                 emergenza.put("data_nascita", information.getDate_of_birth());
                 emergenza.put("codice_fiscale", information.getCodiceFiscale());
                 emergenza.put("cellulare", information.getTelephone());
-                //emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
+                if(position != null) {
+                    String coordinate = String.valueOf(position.getLatitude()) + ", " + String.valueOf(position.getLongitude());
+                    emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
+                }
                 Iterator iterator = problems.iterator();
                 int i = 0;
                 while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
                     Problem problem = (Problem) iterator.next();
                     if (checkBoxs[i].isChecked()) {
-                        emergenza.put(problem.getName(), "true");
+                        emergenza.put("sintomi[]", problem.getName());
                     }
                     i++;
                 }
