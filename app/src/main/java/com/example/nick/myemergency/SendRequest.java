@@ -4,8 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,13 +38,15 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
     private static String URL_STRING = "http://webdev.dibris.unige.it/~S4078757/PAA/emergencyHandler.php";
     private String filename;
     private Information information;
+    private String problemstring;
     Context context;
     private MyEmergencyDB db;
 
-    public SendRequest(Context context, String filename, Information information){
+    public SendRequest(Context context, String filename, Information information, String problemstring){
         this.context = context;
         this.filename = filename;
         this.information = information;
+        this.problemstring = problemstring;
     }
 
     @Override
@@ -120,7 +124,26 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
             event.setTime(currentDateTimeString);
             db.insertEvent(event);
+            if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+                if (information.getContact1() != null) {
+                    String text = "E' stata inviata una richiesta di emergenza per " + information.getName() + " " + information.getSurname() + " con queste problematiche: " + problemstring;
+                    sendSMS(information.getContact1(),text);
+                }
+            } else {
+                Toast.makeText(context,"IMPOSSIBILE INVIARE SMS",Toast.LENGTH_LONG).show();
+            }
             sendNotification();
+
+            /*String smsNumber = "393336518727"; //without '+'
+            Intent sendIntent = new Intent("android.intent.action.MAIN");
+            //sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
+            sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.setType("text/plain");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+            sendIntent.putExtra("jid", smsNumber + "@s.whatsapp.net"); //phone number without "+" prefix
+            sendIntent.setPackage("com.whatsapp");
+            context.startActivity(sendIntent);*/
         }else{
             //Errore
         }
@@ -150,5 +173,18 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         mNotificationManager.notify(001, mBuilder.build());
+    }
+
+    public void sendSMS(String phoneNo, String msg) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            Toast.makeText(context, "Message Sent",
+                    Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Toast.makeText(context,ex.getMessage().toString(),
+                    Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
     }
 }

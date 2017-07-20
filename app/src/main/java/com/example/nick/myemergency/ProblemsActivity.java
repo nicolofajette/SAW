@@ -7,10 +7,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -29,6 +32,7 @@ public class ProblemsActivity extends Activity {
     private MyEmergencyDB db;
     private ArrayList<Problem> problems;
     private Location position;
+    private String problemstring = "";
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -104,29 +108,41 @@ public class ProblemsActivity extends Activity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> emergenza = new HashMap<String, String>();  //Deve contenere una coppia chiave valore dei dati da passare in post.
-                Information information = db.getInformation(informationId);
-                emergenza.put("nome", information.getName());
-                emergenza.put("cognome", information.getSurname());
-                emergenza.put("data_nascita", information.getDate_of_birth());
-                emergenza.put("codice_fiscale", information.getCodiceFiscale());
-                emergenza.put("cellulare", information.getTelephone());
-                if(position != null) {
-                    String coordinate = String.valueOf(position.getLatitude()) + ", " + String.valueOf(position.getLongitude());
-                    emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
-                }
-                Iterator iterator = problems.iterator();
-                int i = 0;
-                while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
-                    Problem problem = (Problem) iterator.next();
-                    if (checkBoxs[i].isChecked()) {
-                        emergenza.put("sintomi[]", problem.getName());
+                if (sendChecked(checkBoxs)) {
+                    HashMap<String, String> emergenza = new HashMap<String, String>();  //Deve contenere una coppia chiave valore dei dati da passare in post.
+                    Information information = db.getInformation(informationId);
+                    emergenza.put("nome", information.getName());
+                    emergenza.put("cognome", information.getSurname());
+                    emergenza.put("data_nascita", information.getDate_of_birth());
+                    emergenza.put("codice_fiscale", information.getCodiceFiscale());
+                    emergenza.put("cellulare", information.getTelephone());
+                    if (position != null) {
+                        String coordinate = String.valueOf(position.getLatitude()) + ", " + String.valueOf(position.getLongitude());
+                        emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
                     }
-                    i++;
+                    Iterator iterator = problems.iterator();
+                    int i = 0;
+                    while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
+                        Problem problem = (Problem) iterator.next();
+                        if (checkBoxs[i].isChecked()) {
+                            emergenza.put("sintomi[]", problem.getName());
+                            problemstring += problem.getName() + " ";
+                        }
+                        i++;
+                    }
+                    new SendRequest(getApplicationContext(), FILENAME, information, problemstring).execute(emergenza);
+                    ProblemsActivity.this.finish();
                 }
-                new SendRequest(getApplicationContext(), FILENAME, information).execute(emergenza);
-                ProblemsActivity.this.finish();
             }
         });
+    }
+
+    public boolean sendChecked(CheckBox[] checkBoxs) {
+        for (int i=0; i<checkBoxs.length; i++) {
+            if (checkBoxs[i].isChecked()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

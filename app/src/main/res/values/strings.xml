@@ -12,9 +12,11 @@
     <string name="hint_CF">Codice Fiscale</string>
     <string name="hint_data">Data di nascita</string>
     <string name="hint_telephone">Telefono</string>
-    <string name="contatti_utili">Contatti utili</string>
+    <string name="contatti_utili">Contatti utili: acconsentendo all\'invio di messaggi in caso di richiesta di emergenza, l\'utente si prenderà carico delle spese supplementari</string>
     <string name="hint_contact1">Contatto 1</string>
     <string name="hint_contact2">Contatto2</string>
+    <string name="acconsento">Acconsento</string>
+    <string name="nonacconsento">Non acconsento</string>
     
     <!-- menu items -->
     <string name="add_task">Add Information</string>

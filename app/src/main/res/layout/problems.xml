@@ -15,15 +15,15 @@
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/titleTextView_text"
             android:gravity="center"
+            android:text="@string/titleTextView_text"
             android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="25dp"
+            android:padding="20dp"
             android:weightSum="1.0">
 
             <CheckBox
@@ -32,14 +32,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.35"
-                
+
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <CheckBox
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView2"
@@ -62,7 +62,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="25dp"
+            android:padding="20dp"
             android:weightSum="1.0">
 
             <CheckBox
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView3"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView4"
@@ -100,7 +100,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="25dp"
+            android:padding="20dp"
             android:weightSum="1.0">
 
             <CheckBox
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView5"
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView6"
@@ -138,7 +138,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="25dp"
+            android:padding="20dp"
             android:weightSum="1.0">
 
             <CheckBox
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView7"
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView8"
@@ -176,7 +176,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="25dp"
+            android:padding="20dp"
             android:weightSum="1.0">
 
             <CheckBox
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView9"
@@ -200,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.15"
                 android:scaleX="1.5"
-                android:scaleY="1.5"/>
+                android:scaleY="1.5" />
 
             <TextView
                 android:id="@+id/TextView10"

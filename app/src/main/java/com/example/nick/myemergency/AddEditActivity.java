@@ -4,6 +4,7 @@ package com.example.nick.myemergency;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -13,10 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +36,7 @@ public class AddEditActivity extends Activity
     private EditText telephoneEditText;
     private EditText contact1EditText;
     private EditText contact2EditText;
+    private Switch switchMessages;
 
     private MyEmergencyDB db;
     private boolean editMode;
@@ -42,6 +46,7 @@ public class AddEditActivity extends Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // get references to widgets
         textViewInfo = (TextView) findViewById(R.id.textViewInfo);
@@ -50,8 +55,7 @@ public class AddEditActivity extends Activity
         CFEditText = (EditText) findViewById(R.id.CFEditText);
         anniEditText = (EditText) findViewById(R.id.anniEditText);
         telephoneEditText = (EditText) findViewById(R.id.telephoneEditText);
-        contact1EditText = (EditText) findViewById(R.id.contact1EditText);
-        contact2EditText = (EditText) findViewById(R.id.contact2EditText);
+
 
         // set listeners
         nameEditText.setOnKeyListener(this);
@@ -59,8 +63,14 @@ public class AddEditActivity extends Activity
         CFEditText.setOnKeyListener(this);
         anniEditText.setOnKeyListener(this);
         telephoneEditText.setOnKeyListener(this);
-        contact1EditText.setOnKeyListener(this);
-        contact2EditText.setOnKeyListener(this);
+
+        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+            contact1EditText = (EditText) findViewById(R.id.contact1EditText);
+            contact2EditText = (EditText) findViewById(R.id.contact2EditText);
+            switchMessages = (Switch) findViewById(R.id.switchMessages);
+            contact1EditText.setOnKeyListener(this);
+            contact2EditText.setOnKeyListener(this);
+        }
 
         nameEditText.addTextChangedListener(new TextWatcher()  {
 
@@ -215,6 +225,11 @@ public class AddEditActivity extends Activity
             telephoneEditText.setText(information.getTelephone());
             contact1EditText.setText(information.getContact1());
             contact2EditText.setText(information.getContact2());
+            if (information.getContact1() != null || information.getContact2() != null ) {
+                switchMessages.setChecked(true);
+            } else {
+                switchMessages.setChecked(false);
+            }
         }
     }
 
@@ -282,8 +297,16 @@ public class AddEditActivity extends Activity
         String CF = CFEditText.getText().toString();
         String date_of_birth = anniEditText.getText().toString();
         String telephone = telephoneEditText.getText().toString();
-        String contact1 = contact1EditText.getText().toString();
-        String contact2 = contact2EditText.getText().toString();
+        String contact1;
+        String contact2;
+        if (switchMessages.isChecked() && (contact1EditText.getText().toString() == null && contact2EditText.getText().toString() == null)) {
+            contact1 = contact1EditText.getText().toString();
+            contact2 = contact2EditText.getText().toString();
+        } else {
+            contact1 = null;
+            contact2 = null;
+        }
+
 
         // if add mode, create new information
         if (!editMode) {
@@ -318,10 +341,6 @@ public class AddEditActivity extends Activity
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             return true;
         }
-        /*else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveToDB();
-            return false;
-        }*/
         return false;
     }
 
