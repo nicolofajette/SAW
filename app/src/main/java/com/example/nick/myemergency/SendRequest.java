@@ -4,8 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -41,6 +43,14 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
     private String problemstring;
     Context context;
     private MyEmergencyDB db;
+
+    // define messages constants
+    private final int MESSAGES_NONE = 0;
+    private final int MESSAGES_NORMAL = 1;
+    private final int MESSAGES_WHATSAPP = 2;
+
+    private SharedPreferences prefs;
+    private int messages_type = MESSAGES_NONE;
 
     public SendRequest(Context context, String filename, Information information, String problemstring){
         this.context = context;
@@ -118,32 +128,43 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
         if(result.equals("Success")){
             //Invio richiesta avvenuta con successo
             db = new MyEmergencyDB(context);
+            Information possessor = db.getInformation(1);
             Evento event = new Evento();
             event.setType("INVIATO");
             event.setName(information.getName() + " " + information.getSurname());
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
             event.setTime(currentDateTimeString);
             db.insertEvent(event);
+            // get default SharedPreferences object
+            prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            messages_type = Integer.parseInt(prefs.getString("pref_messages", "0"));
+            String text = "E' stata inviata una richiesta di emergenza per " + information.getName() + " " + information.getSurname() + " con queste problematiche: " + problemstring + "dal cellulare di " + possessor.getName() + " " + possessor.getSurname();
             if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-                if (information.getContact1() != null) {
-                    String text = "E' stata inviata una richiesta di emergenza per " + information.getName() + " " + information.getSurname() + " con queste problematiche: " + problemstring;
-                    sendSMS(information.getContact1(),text);
+                if (messages_type == MESSAGES_NORMAL) {
+                    if (information.getContact1() != null && !information.getContact1().equals("") && information.getContact1().length() > 1) {
+                        sendSMS(information.getContact1(), text);
+                    }
+                    if (information.getContact2() != null && information.getContact2().equals("") && information.getContact2().length() > 1) {
+                        sendSMS(information.getContact2(), text);
+                    }
+                } else if (messages_type == MESSAGES_WHATSAPP) {
+                    if (information.getContact1() != null && information.getContact1().equals("") && information.getContact1().length() > 1) {
+                        String smsNumber = "39"+information.getContact1();
+                        Intent sendIntent = new Intent("android.intent.action.MAIN");
+                        //sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
+                        sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.setType("text/plain");
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                        sendIntent.putExtra("jid", smsNumber + "@s.whatsapp.net");
+                        sendIntent.setPackage("com.whatsapp");
+                        context.startActivity(sendIntent);
+                    }
                 }
             } else {
-                Toast.makeText(context,"IMPOSSIBILE INVIARE SMS",Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"IMPOSSIBILE INVIARE MESSAGGI",Toast.LENGTH_LONG).show();
             }
             sendNotification();
-
-            /*String smsNumber = "393336518727"; //without '+'
-            Intent sendIntent = new Intent("android.intent.action.MAIN");
-            //sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
-            sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-            sendIntent.putExtra("jid", smsNumber + "@s.whatsapp.net"); //phone number without "+" prefix
-            sendIntent.setPackage("com.whatsapp");
-            context.startActivity(sendIntent);*/
         }else{
             //Errore
         }

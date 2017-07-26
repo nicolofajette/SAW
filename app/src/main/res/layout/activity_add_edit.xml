@@ -24,6 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="20sp">
 
@@ -53,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_data"
-                android:inputType="date" />
+                android:inputType="phone" />
 
 
             <EditText
@@ -76,6 +77,33 @@
                 android:text="@string/contatti_utili"
                 android:textSize="18sp" />
 
+            <RadioGroup
+                android:id="@+id/radioSendMessages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation='horizontal'>
+
+                <RadioButton
+                    android:id="@+id/radioNone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/radioNone" />
+
+                <RadioButton
+                    android:id="@+id/radioMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/radioMessage" />
+
+                <RadioButton
+                    android:id="@+id/radioWhatsapp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/radioWhatsapp" />
+
+            </RadioGroup>
+
             <EditText
                 android:id="@+id/contact1EditText"
                 android:layout_width="match_parent"
@@ -89,14 +117,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_contact2"
                 android:inputType="number" />
-
-            <Switch
-                android:id="@+id/switchMessages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:textOn="@string/acconsento"
-                android:textOff="@string/nonacconsento"/>
 
         </LinearLayout>
 

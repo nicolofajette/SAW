@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="app_name">Information</string>
+    <string name="app_name">My Emergency</string>
+    <string name="title_activity_settings">Impostazioni</string>
     
     <!-- information screen -->
     <string name="information_name">Name</string>
@@ -12,17 +13,19 @@
     <string name="hint_CF">Codice Fiscale</string>
     <string name="hint_data">Data di nascita</string>
     <string name="hint_telephone">Telefono</string>
-    <string name="contatti_utili">Contatti utili: acconsentendo all\'invio di messaggi in caso di richiesta di emergenza, l\'utente si prenderà carico delle spese supplementari</string>
+    <string name="contatti_utili">Contatti utili: inserisca il numero di telefono in base alla tipologia di messagistica scelta</string>
     <string name="hint_contact1">Contatto 1</string>
     <string name="hint_contact2">Contatto2</string>
-    <string name="acconsento">Acconsento</string>
-    <string name="nonacconsento">Non acconsento</string>
+    <string name="radioNone">Nessuno</string>
+    <string name="radioMessage">Messaggi</string>
+    <string name="radioWhatsapp">Whatsapp</string>
     
     <!-- menu items -->
     <string name="add_task">Add Information</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="menu_settings">Settings</string>
 
     <!-- problems activity -->
     <string name="titleTextView_text">Inserisca le informazioni per il soccorso</string>string>
@@ -32,5 +35,23 @@
     <string name="event_type">Tipo</string>
     <string name="event_name">Nome</string>
     <string name="event_time">Ora</string>
+
+    <!-- preferences -->
+    <string name="remember_phone_number">Ricorda il numero di telefono</string>
+    <string name="remember_phone_number_summary">Utilizza sempre lo stesso numero di telefono come contatto</string>
+    <string name="messages">Scegli metodo di messaggistica</string>
+    <string name="messages_summary">Scegli il metodo di messagistica da utilizzare in caso di emergenza. Scegliondo i messaggi normali è possibile inviare un messaggio a due contatti di emergenza, scegliendo whatsapp è possibile aprire l\'applicazione di messaggistica e inviare un messaggio a un solo utente altrimenti è possibile scegliere di non inviare nulla</string>
+    <string name="messages_title">Tipo di messaggi</string>
+    <string-array name="messages_keys">
+        <item >Nessuno</item>
+        <item >Messaggi</item>
+        <item >Whatsapp</item>
+    </string-array>
+    <string-array name="messages_values">
+        <item >0</item>
+        <item >1</item>
+        <item >2</item>
+    </string-array>
+    <string name="messages_default">0</string>
 
 </resources>

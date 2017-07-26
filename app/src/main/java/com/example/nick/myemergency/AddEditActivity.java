@@ -4,8 +4,12 @@ package com.example.nick.myemergency;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.support.annotation.IdRes;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +21,8 @@ import android.view.View.OnKeyListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,17 +42,31 @@ public class AddEditActivity extends Activity
     private EditText telephoneEditText;
     private EditText contact1EditText;
     private EditText contact2EditText;
-    private Switch switchMessages;
+    private RadioGroup radioSendMessages;
 
     private MyEmergencyDB db;
     private boolean editMode;
     private boolean firstTime;
     private Information information;
 
+    // define messages constants
+    private final int MESSAGES_NONE = 0;
+    private final int MESSAGES_NORMAL = 1;
+    private final int MESSAGES_WHATSAPP = 2;
+
+    // set up preferences
+    private SharedPreferences prefs;
+    private Boolean rememberPhoneNumber = true;
+    private int messages_type = MESSAGES_NONE;
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        // get default SharedPreferences object
+        prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         // get references to widgets
         textViewInfo = (TextView) findViewById(R.id.textViewInfo);
@@ -55,7 +75,9 @@ public class AddEditActivity extends Activity
         CFEditText = (EditText) findViewById(R.id.CFEditText);
         anniEditText = (EditText) findViewById(R.id.anniEditText);
         telephoneEditText = (EditText) findViewById(R.id.telephoneEditText);
-
+        radioSendMessages = (RadioGroup) findViewById(R.id.radioSendMessages);
+        contact1EditText = (EditText) findViewById(R.id.contact1EditText);
+        contact2EditText = (EditText) findViewById(R.id.contact2EditText);
 
         // set listeners
         nameEditText.setOnKeyListener(this);
@@ -63,14 +85,6 @@ public class AddEditActivity extends Activity
         CFEditText.setOnKeyListener(this);
         anniEditText.setOnKeyListener(this);
         telephoneEditText.setOnKeyListener(this);
-
-        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-            contact1EditText = (EditText) findViewById(R.id.contact1EditText);
-            contact2EditText = (EditText) findViewById(R.id.contact2EditText);
-            switchMessages = (Switch) findViewById(R.id.switchMessages);
-            contact1EditText.setOnKeyListener(this);
-            contact2EditText.setOnKeyListener(this);
-        }
 
         nameEditText.addTextChangedListener(new TextWatcher()  {
 
@@ -190,7 +204,7 @@ public class AddEditActivity extends Activity
         // get edit mode from intent
         Intent intent = getIntent();
         editMode = intent.getBooleanExtra("editMode", false);
-        firstTime = intent.getBooleanExtra("first", true);
+        firstTime = intent.getBooleanExtra("first", false);
         if (editMode == false) {
             if (firstTime == true) {
                 textViewInfo.setText("Inserisci i tuoi dati per poterli avere a disposizione nel momento del bisogno");
@@ -201,15 +215,44 @@ public class AddEditActivity extends Activity
             textViewInfo.setText("Aggiornamento dei dati");
         }
 
-        /*String telephoneNumber = getMyPhoneNumber();
-        if (telephoneNumber.equals("error")) {*/
+        rememberPhoneNumber = prefs.getBoolean("pref_remember_phone_number", true);
+        messages_type = Integer.parseInt(prefs.getString("pref_messages", "0"));
+        if (!firstTime) {
+            if (!rememberPhoneNumber) {
+                telephoneEditText.setClickable(true);
+                telephoneEditText.setCursorVisible(true);
+                telephoneEditText.setFocusable(true);
+                telephoneEditText.setFocusableInTouchMode(true);
+            } else {
+                telephoneEditText.setText(db.getInformation(1).getTelephone());
+            }
+
+        } else {
             telephoneEditText.setClickable(true);
             telephoneEditText.setCursorVisible(true);
             telephoneEditText.setFocusable(true);
             telephoneEditText.setFocusableInTouchMode(true);
-        /*} else {
-            telephoneEditText.setText(getMy10DigitPhoneNumber());
-        }*/
+        }
+        ((RadioButton)radioSendMessages.getChildAt(messages_type)).setChecked(true);
+        for (int i = 0; i < radioSendMessages.getChildCount(); i++) {
+            radioSendMessages.getChildAt(i).setEnabled(false);
+        }
+
+        if (messages_type == MESSAGES_NONE) {
+            contact1EditText.setText(null);
+            contact2EditText.setText(null);
+            contact1EditText.setVisibility(View.INVISIBLE);
+            contact2EditText.setVisibility(View.INVISIBLE);
+        } else if (messages_type == MESSAGES_WHATSAPP) {
+            contact1EditText.setVisibility(View.VISIBLE);
+            contact2EditText.setText(null);
+            contact2EditText.setVisibility(View.INVISIBLE);
+        } else {
+            contact1EditText.setVisibility(View.VISIBLE);
+            contact2EditText.setVisibility(View.VISIBLE);
+            contact1EditText.setText(null);
+            contact2EditText.setText(null);
+        }
 
         // if editing
         if (editMode) {
@@ -222,15 +265,30 @@ public class AddEditActivity extends Activity
             surnameEditText.setText(information.getSurname());
             CFEditText.setText(information.getCodiceFiscale());
             anniEditText.setText(information.getDate_of_birth());
+            telephoneEditText.setClickable(true);
+            telephoneEditText.setCursorVisible(true);
+            telephoneEditText.setFocusable(true);
+            telephoneEditText.setFocusableInTouchMode(true);
             telephoneEditText.setText(information.getTelephone());
             contact1EditText.setText(information.getContact1());
             contact2EditText.setText(information.getContact2());
-            if (information.getContact1() != null || information.getContact2() != null ) {
-                switchMessages.setChecked(true);
-            } else {
-                switchMessages.setChecked(false);
-            }
         }
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // get preferences
+        rememberPhoneNumber = prefs.getBoolean("pref_remember_phone_number", true);
+        messages_type = Integer.parseInt(prefs.getString("pref_message", "0"));
+
     }
 
     @Override
@@ -297,16 +355,8 @@ public class AddEditActivity extends Activity
         String CF = CFEditText.getText().toString();
         String date_of_birth = anniEditText.getText().toString();
         String telephone = telephoneEditText.getText().toString();
-        String contact1;
-        String contact2;
-        if (switchMessages.isChecked() && (contact1EditText.getText().toString() == null && contact2EditText.getText().toString() == null)) {
-            contact1 = contact1EditText.getText().toString();
-            contact2 = contact2EditText.getText().toString();
-        } else {
-            contact1 = null;
-            contact2 = null;
-        }
-
+        String contact1 = contact1EditText.getText().toString();
+        String contact2 = contact2EditText.getText().toString();
 
         // if add mode, create new information
         if (!editMode) {
@@ -344,21 +394,7 @@ public class AddEditActivity extends Activity
         return false;
     }
 
-    /*private String getMyPhoneNumber(){
-        TelephonyManager mTelephonyMgr;
-        mTelephonyMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String number = mTelephonyMgr.getLine1Number();
-        if (mTelephonyMgr.getLine1Number().equals("") || mTelephonyMgr.getLine1Number()==null) {
-            return "error";
-        } else {
-            return mTelephonyMgr.getLine1Number();
-        }
-    }
 
-    private String getMy10DigitPhoneNumber(){
-        String s = getMyPhoneNumber();
-        return s.substring(2);
-    }*/
 
     @Override
     public void onBackPressed() {

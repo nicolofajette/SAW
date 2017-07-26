@@ -96,7 +96,9 @@ public class InformationFragment extends Fragment {
                 }
                 // Refresh list
                 refreshTaskList();
-
+                break;
+            case R.id.menu_settings:
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

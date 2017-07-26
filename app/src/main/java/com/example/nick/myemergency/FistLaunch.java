@@ -22,7 +22,7 @@ public class FistLaunch extends Activity {
         if(firstTime || !db.testNotEmpty()) {
             editor.putBoolean("first",false);
             editor.commit();
-            Intent intent = new Intent(this,  AddEditActivity.class);
+            Intent intent = new Intent(this,  SettingsActivity.class);
             intent.putExtra("first", true);
             startActivity(intent);
             finish();

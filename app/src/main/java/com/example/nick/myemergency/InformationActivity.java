@@ -77,35 +77,4 @@ public class InformationActivity extends FragmentActivity {
         inflater.inflate(R.menu.activity_task_list, menu);
         return true;
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menuAddTask:
-                Intent intent = new Intent(this, AddEditActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("editMode", false);
-                intent.putExtra("first", false);
-                startActivity(intent);
-                break;
-            case R.id.menuDelete:
-                // Hide all tasks marked as cancel
-                ArrayList<Information> informations = db.getInformations();
-                for (Information information : informations){
-                    if (information.getCancelDateMillis() > 0){
-                        information.setHidden(Information.TRUE);
-                        //db.updateInformation(information);
-                        db.deleteInformation(information);
-                    }
-                }
-                // Refresh list
-                InformationFragment currentFragment = (InformationFragment)
-                        getSupportFragmentManager().
-                                findFragmentByTag(tabHost.getCurrentTabTag());
-                currentFragment.refreshTaskList();
-
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 }

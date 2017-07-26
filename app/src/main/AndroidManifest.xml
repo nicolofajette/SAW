@@ -17,6 +17,10 @@
         </activity>
         <activity android:name="com.example.nick.myemergency.AddEditActivity" ></activity>
         <activity android:name="com.example.nick.myemergency.ProblemsActivity"></activity>
+        <activity
+            android:name="com.example.nick.myemergency.SettingsActivity"
+            android:label="@string/title_activity_settings">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
