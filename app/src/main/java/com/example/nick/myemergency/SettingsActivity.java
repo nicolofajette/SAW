@@ -52,6 +52,7 @@ public class SettingsActivity extends Activity {
                 Intent intent = new Intent(this, AddEditActivity.class);
                 intent.putExtra("first", true);
                 startActivity(intent);
+                finish();
         }
         return true;
 

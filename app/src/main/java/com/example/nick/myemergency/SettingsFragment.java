@@ -30,11 +30,12 @@ public class SettingsFragment extends PreferenceFragment
             PreferenceScreen screen = getPreferenceScreen();
             Preference pref = getPreferenceManager().findPreference("pref_messages");
             screen.removePreference(pref);
-        }
-        if (!getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-            ListPreference messages_type = (ListPreference) findPreference("pref_messages");
-            messages_type.setEntries(new String[]{"Nessuno","Whatsapp"});
-            messages_type.setEntryValues(new String[]{"0", "2"});
+        } else {
+            if (!getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+                ListPreference messages_type = (ListPreference) findPreference("pref_messages");
+                messages_type.setEntries(new String[]{"Nessuno", "Whatsapp"});
+                messages_type.setEntryValues(new String[]{"0", "2"});
+            }
         }
     }
 
