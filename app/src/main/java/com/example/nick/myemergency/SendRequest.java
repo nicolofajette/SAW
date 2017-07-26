@@ -200,7 +200,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
         try {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNo, null, msg, null, null);
-            Toast.makeText(context, "Message Sent",
+            Toast.makeText(context, "Messagio Inviato",
                     Toast.LENGTH_LONG).show();
         } catch (Exception ex) {
             Toast.makeText(context,ex.getMessage().toString(),
