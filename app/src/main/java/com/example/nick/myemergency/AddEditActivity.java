@@ -205,8 +205,8 @@ public class AddEditActivity extends Activity
         Intent intent = getIntent();
         editMode = intent.getBooleanExtra("editMode", false);
         firstTime = intent.getBooleanExtra("first", false);
-        if (editMode == false) {
-            if (firstTime == true) {
+        if (!editMode) {
+            if (firstTime) {
                 textViewInfo.setText("Inserisci i tuoi dati per poterli avere a disposizione nel momento del bisogno");
             } else {
                 textViewInfo.setText("Inserisci i dati di qualcuno che potrebbe avere bisogno");
@@ -309,19 +309,19 @@ public class AddEditActivity extends Activity
 
                 // if no informations, exit method
 
-                if (name == null || name.equals("")) {
+                if (name.equals("")) {
                     nameEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (surname == null || surname.equals("")) {
+                if (surname.equals("")) {
                     surnameEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (CF == null || CF.equals("")) {
+                if (CF.equals("")) {
                     CFEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (date_of_birth == null || date_of_birth.equals("")) {
+                if (date_of_birth.equals("")) {
                     anniEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (telephone == null || telephone.equals("")) {
+                if (telephone.equals("")) {
                     telephoneEditText.setError("Questo campo non può essere vuoto");
                 }
                 if ((nameEditText.getError() == null && nameEditText.getText().length() != 0) &&

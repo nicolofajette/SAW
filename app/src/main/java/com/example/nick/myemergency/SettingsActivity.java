@@ -21,8 +21,10 @@ public class SettingsActivity extends Activity {
         if (!firstTime) {
             state = true;
             ActionBar actionBar = getActionBar();
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_back);
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_back);
+            }
             invalidateOptionsMenu();
         }
 
@@ -33,7 +35,7 @@ public class SettingsActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_settings, menu);
-        if (state == true)
+        if (state)
         {
             menu.findItem(R.id.menuSave).setVisible(false);
         }

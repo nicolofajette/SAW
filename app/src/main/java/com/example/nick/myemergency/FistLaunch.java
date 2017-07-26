@@ -21,7 +21,7 @@ public class FistLaunch extends Activity {
         boolean  firstTime = sharedPreferences.getBoolean("first", true);
         if(firstTime || !db.testNotEmpty()) {
             editor.putBoolean("first",false);
-            editor.commit();
+            editor.apply();
             Intent intent = new Intent(this,  SettingsActivity.class);
             intent.putExtra("first", true);
             startActivity(intent);

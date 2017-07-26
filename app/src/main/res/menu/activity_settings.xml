@@ -3,5 +3,5 @@
     <item android:id="@+id/menuSave"
         android:showAsAction="ifRoom"
         android:title="@string/save"
-        android:icon="@drawable/ic_action_save"></item>
+        android:icon="@drawable/ic_action_save"/>
 </menu>

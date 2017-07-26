@@ -10,5 +10,5 @@
         android:title="@string/menu_settings"
         android:icon="@drawable/ic_settings"
         android:showAsAction="ifRoom"
-        android:orderInCategory="2"></item>/>
+        android:orderInCategory="2"/>
 </menu>
