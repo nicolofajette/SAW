@@ -120,14 +120,23 @@ public class ProblemsActivity extends Activity {
                     }
                     Iterator iterator = problems.iterator();
                     int i = 0;
+                    String sintomi = "";
+                    boolean first = true;
                     while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
                         Problem problem = (Problem) iterator.next();
                         if (checkBoxs[i].isChecked()) {
-                            emergenza.put("sintomi[]", problem.getName());
+                            //emergenza.put("sintomi[]", problem.getName());
+                            if(first){
+                                first = false;
+                            }else{
+                                sintomi += ", ";
+                            }
+                            sintomi += problem.getName();
                             problemstring += problem.getName() + " ";
                         }
                         i++;
                     }
+                    emergenza.put("sintomi", sintomi);
                     new SendRequest(getApplicationContext(), FILENAME, information, problemstring).execute(emergenza);
                     ProblemsActivity.this.finish();
                 }

@@ -75,7 +75,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             conn.setDoOutput(true);
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
+            writer.write(getPostDataString(postDataParams));    //Scrivo i dati in post da inviare
             writer.flush();
             writer.close();
             os.close();
@@ -118,7 +118,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             }
             result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
             result.append("=");
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
         return result.toString();
     }
