@@ -340,9 +340,8 @@ public class AddEditActivity extends Activity
                 }
                 break;
             case R.id.menuCancel:
-                if (!firstTime || editMode) {
                     this.finish();
-                }
+
                 break;
         }
         return super.onOptionsItemSelected(item);

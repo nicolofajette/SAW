@@ -54,4 +54,8 @@
     </string-array>
     <string name="messages_default">0</string>
 
+    <string name="gps_network_not_enabled">Per l\'utilizzo del servizio è necessario attivare la localizzazione</string>
+    <string name="open_location_settings">Apri localizzazione</string>
+    <string name="Cancel">Annulla</string>
+
 </resources>

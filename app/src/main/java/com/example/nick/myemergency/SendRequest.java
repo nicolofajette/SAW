@@ -148,7 +148,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
                         sendSMS(information.getContact2(), text);
                     }
                 } else if (messages_type == MESSAGES_WHATSAPP) {
-                    if (information.getContact1() != null && information.getContact1().equals("") && information.getContact1().length() > 1) {
+                    if (information.getContact1() != null && !information.getContact1().equals("") && information.getContact1().length() > 1) {
                         String smsNumber = "39"+information.getContact1();
                         Intent sendIntent = new Intent("android.intent.action.MAIN");
                         //sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));

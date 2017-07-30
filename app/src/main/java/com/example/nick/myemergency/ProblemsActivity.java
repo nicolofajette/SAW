@@ -2,12 +2,18 @@ package com.example.nick.myemergency;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -132,7 +138,7 @@ public class ProblemsActivity extends Activity {
                                 sintomi += ", ";
                             }
                             sintomi += problem.getName();
-                            problemstring += problem.getName() + " ";
+                            problemstring += problem.getName() + ", ";
                         }
                         i++;
                     }
@@ -151,5 +157,32 @@ public class ProblemsActivity extends Activity {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    position = location;
+                    tittleTextView.setText(Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude()));
+                }
+            }
+        });
+
     }
 }
