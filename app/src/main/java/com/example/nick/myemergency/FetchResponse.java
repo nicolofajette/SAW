@@ -37,11 +37,11 @@ public class FetchResponse extends AsyncTask<String, Void, String>{
 
             InputSource is = new InputSource(in);
             xmlReader.parse(is);
-            if(xmlHandler.getCallStatus() == -1){
+            if(xmlHandler.getCallStatus() == "Error"){
                 //Errore nella richiesta
                 return "Request error";
             }else{
-                return String.valueOf(xmlHandler.getCallStatus());
+                return String.valueOf(xmlHandler.getCallId());
             }
         }catch(Exception e){
             Log.e("Parsing XML", e.toString());
@@ -52,12 +52,13 @@ public class FetchResponse extends AsyncTask<String, Void, String>{
     @Override
     protected void onPostExecute(String result){
         if(result.equals("Request error")){
-
+            //Errore
         }else if(result.equals("Parse error")){
-
+            //Errore
         }else{
             //Successo
             Toast.makeText(context, "Richiesta inviata", Toast.LENGTH_LONG);
+            //TODO: inserire qui inserimento evento: richiesta ricevuta dal server con id result
         }
     }
 }
