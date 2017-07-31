@@ -2,11 +2,11 @@
 
     <string name="app_name">My Emergency</string>
     <string name="title_activity_settings">Impostazioni</string>
-    
+
     <!-- information screen -->
     <string name="information_name">Name</string>
     <string name="information_surname">Surname</string>
-    
+
     <!-- add/edit screen -->
     <string name="hint_name">Nome</string>
     <string name="hint_surname">Cognome</string>
@@ -19,7 +19,7 @@
     <string name="radioNone">Nessuno</string>
     <string name="radioMessage">Messaggi</string>
     <string name="radioWhatsapp">Whatsapp</string>
-    
+
     <!-- menu items -->
     <string name="add_task">Add Information</string>
     <string name="delete">Delete</string>
@@ -43,14 +43,14 @@
     <string name="messages_summary">Scegli il metodo di messagistica da utilizzare in caso di emergenza. Scegliondo i messaggi normali è possibile inviare un messaggio a due contatti di emergenza, scegliendo whatsapp è possibile aprire l\'applicazione di messaggistica e inviare un messaggio a un solo utente altrimenti è possibile scegliere di non inviare nulla</string>
     <string name="messages_title">Tipo di messaggi</string>
     <string-array name="messages_keys">
-        <item >Nessuno</item>
-        <item >Messaggi</item>
-        <item >Whatsapp</item>
+        <item>Nessuno</item>
+        <item>Messaggi</item>
+        <item>Whatsapp</item>
     </string-array>
     <string-array name="messages_values">
-        <item >0</item>
-        <item >1</item>
-        <item >2</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
     <string name="messages_default">0</string>
 
