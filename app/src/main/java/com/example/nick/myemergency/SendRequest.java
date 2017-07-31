@@ -162,17 +162,17 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
                     }
                 }
             } else {
-                Toast.makeText(context,"IMPOSSIBILE INVIARE MESSAGGI",Toast.LENGTH_LONG).show();
+                //errore
             }
-            sendNotification();
+            sendNotification(true);
         }else{
-            //Errore
+            sendNotification(false);
         }
         Log.d("Esito connessione", result);
         new FetchResponse(context).execute(filename);
     }
 
-    public void sendNotification() {
+    public void sendNotification(Boolean condition) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context);
@@ -186,8 +186,13 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
         mBuilder.setContentIntent(pendingIntent);
 
         mBuilder.setSmallIcon(R.drawable.ic_launcher);
-        mBuilder.setContentTitle("Richiesta inviata");
-        mBuilder.setContentText("Le risponderemo al più presto");
+        if (condition) {
+            mBuilder.setContentTitle("Richiesta inviata");
+            mBuilder.setContentText("Le risponderemo al più presto");
+        } else {
+            mBuilder.setContentTitle("Richiesta non inviata");
+            mBuilder.setContentText("Errore nell'invio della richiesta");
+        }
 
         NotificationManager mNotificationManager =
 

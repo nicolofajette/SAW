@@ -2,6 +2,7 @@ package com.example.nick.myemergency;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,6 +29,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +63,7 @@ public class AddEditActivity extends Activity
     private SharedPreferences prefs;
     private Boolean rememberPhoneNumber = true;
     private int messages_type = MESSAGES_NONE;
+    final Calendar myCalendar = Calendar.getInstance();
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,33 @@ public class AddEditActivity extends Activity
         radioSendMessages = (RadioGroup) findViewById(R.id.radioSendMessages);
         contact1EditText = (EditText) findViewById(R.id.contact1EditText);
         contact2EditText = (EditText) findViewById(R.id.contact2EditText);
+
+
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        anniEditText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(AddEditActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         // set listeners
         nameEditText.setOnKeyListener(this);
@@ -301,6 +334,11 @@ public class AddEditActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menuSave:
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 String name = nameEditText.getText().toString();
                 String surname = surnameEditText.getText().toString();
                 String CF = CFEditText.getText().toString();
@@ -391,6 +429,13 @@ public class AddEditActivity extends Activity
             return true;
         }
         return false;
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
+
+        anniEditText.setText(sdf.format(myCalendar.getTime()));
     }
 
 
