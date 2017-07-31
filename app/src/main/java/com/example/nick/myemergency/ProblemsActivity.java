@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -143,6 +144,13 @@ public class ProblemsActivity extends Activity {
                         i++;
                     }
                     emergenza.put("sintomi", sintomi);
+                    GCMRegistration gcmRegistration = new GCMRegistration(getApplicationContext());
+                    if(gcmRegistration.getRegid() == null){
+                        //Impossibile ricevere notifiche
+                        Log.d("GCM", "Errore gcm");
+                    }else{
+                        emergenza.put("regid", gcmRegistration.getRegid());
+                    }
                     new SendRequest(getApplicationContext(), FILENAME, information, problemstring).execute(emergenza);
                     ProblemsActivity.this.finish();
                 }

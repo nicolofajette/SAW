@@ -14,6 +14,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -126,4 +128,5 @@ public class InformationActivity extends FragmentActivity {
             dialog.show();
         }
     }
+
 }

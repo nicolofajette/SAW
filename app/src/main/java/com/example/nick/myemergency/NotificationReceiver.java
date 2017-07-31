@@ -1,6 +1,7 @@
 package com.example.nick.myemergency;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,15 +30,33 @@ public class NotificationReceiver extends BroadcastReceiver {
         if(!extras.isEmpty()){
             if(GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)){
                 //Emetti notifica
-                sendNotification(context, "notifica");
+                sendNotification(context);
             }
         }
     }
 
-    private void sendNotification(Context context, String msg){
-        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);   //Suoneria notifica
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setContentTitle("MyEmergency").setContentText(msg).setSound(sound);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+
+    public void sendNotification(Context context) {
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context);
+        mBuilder.setAutoCancel(true);
+
+        //Create the intent that’ll fire when the user taps the notification//
+        Intent intent = new Intent(context, InformationActivity.class);
+        intent.putExtra("notifica", 1);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+
+        mBuilder.setContentIntent(pendingIntent);
+
+        mBuilder.setSmallIcon(R.drawable.ic_launcher);
+        mBuilder.setContentTitle("Richiesta accetta");
+        mBuilder.setContentText("I soccorsi sono in arrivo");
+
+        NotificationManager mNotificationManager =
+
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.notify(001, mBuilder.build());
     }
 }

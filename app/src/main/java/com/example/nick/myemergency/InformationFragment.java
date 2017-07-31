@@ -100,6 +100,12 @@ public class InformationFragment extends Fragment {
             case R.id.menu_settings:
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 break;
+            case R.id.menu_tutorial:
+                Intent intentTutorial = new Intent(getContext(), TutorialActivity.class);
+                intentTutorial.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentTutorial.putExtra("tutorial", true);
+                startActivity(intentTutorial);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

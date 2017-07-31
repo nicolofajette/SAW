@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_settings"
         android:showAsAction="ifRoom"
         android:orderInCategory="2"/>
+    <item android:id="@+id/menu_tutorial"
+        android:title="@string/menu_tutorial"
+        android:orderInCategory="3"
+        android:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_help" />
 </menu>
