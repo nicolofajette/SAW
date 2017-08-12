@@ -13,18 +13,29 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 
 public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String> {
@@ -43,6 +56,8 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
     private String problemstring;
     Context context;
     private MyEmergencyDB db;
+
+    private long callId;
 
     // define messages constants
     private final int MESSAGES_NONE = 0;
@@ -96,7 +111,29 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
                 while((line = br.readLine()) != null){
                     response += line;
                 }*/
-                return "Success";
+                //Sistemo formattazione file(per compatibilità)
+                //checkFileFormat();
+                //Parsing risposta
+                Log.d("PARSING", "Parsing risposta");
+                SAXParserFactory factory = SAXParserFactory.newInstance();
+                SAXParser parser = factory.newSAXParser();
+                XMLReader xmlReader = parser.getXMLReader();
+                XMLHandler xmlHandler = new XMLHandler();
+                xmlReader.setContentHandler(xmlHandler);
+                FileInputStream xml_file = context.openFileInput(filename);
+                InputSource is = new InputSource(xml_file);
+                is.setEncoding("UTF-8");
+                xmlReader.parse(is);
+                Log.d("PARSING", "Fine parsing");
+
+                Log.d("CALL STATUS", xmlHandler.getCallStatus());
+                if(xmlHandler.getCallStatus().equals("OK")){
+                    callId = xmlHandler.getCallId();    //Salvo id chiamata
+                    Log.d("CallID", String.valueOf(callId));
+                    return "Success";
+                }else{
+                    return "Errore invio richiesta";
+                }
             }else{
                 return "HTTP err";
             }
@@ -213,4 +250,20 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             ex.printStackTrace();
         }
     }
+
+    /*private void checkFileFormat() throws IOException{
+        File tempFile = File.createTempFile("buf", ".tmp");
+        FileWriter fw = new FileWriter(tempFile);
+
+        Reader fr = new FileReader(new File(filename));
+        BufferedReader br = new BufferedReader(fr);
+
+        while(br.ready()){
+            fw.write(br.readLine().replaceAll("\n", "").replaceAll("\r", ""));
+        }
+        fw.close();
+        br.close();
+        fr.close();
+        tempFile.renameTo(new File(filename));
+    }*/
 }

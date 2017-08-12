@@ -50,7 +50,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         mBuilder.setContentIntent(pendingIntent);
 
         mBuilder.setSmallIcon(R.drawable.ic_launcher);
-        mBuilder.setContentTitle("Richiesta accetta");
+        mBuilder.setContentTitle("Richiesta accettata");
         mBuilder.setContentText("I soccorsi sono in arrivo");
 
         NotificationManager mNotificationManager =
