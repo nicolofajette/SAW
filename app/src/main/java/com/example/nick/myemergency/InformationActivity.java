@@ -113,6 +113,7 @@ public class InformationActivity extends FragmentActivity {
                     // TODO Auto-generated method stub
                     Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(myIntent);
                     //get gps
                 }

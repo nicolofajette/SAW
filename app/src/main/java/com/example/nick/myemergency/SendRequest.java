@@ -56,7 +56,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
     private String filename;
     private Information information;
     private String problemstring;
-    Context context;
+    private Context context;
     private MyEmergencyDB db;
 
     private long callId;

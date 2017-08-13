@@ -32,6 +32,7 @@ public class ProblemsActivity extends Activity {
     private static String FILENAME = "response_temp.txt";   //Nome file in cui salvare temporaneamente la risposta XML dal server
 
     private TextView tittleTextView;
+    private TextView positionTextView;
     private Button sendButton;
 
     private MyEmergencyDB db;
@@ -49,30 +50,9 @@ public class ProblemsActivity extends Activity {
         Intent intent = getIntent();
         final long informationId = intent.getLongExtra("informationId", -1);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                // Got last known location. In some rare situations this can be null.
-                if (location != null) {
-                    position = location;
-                    tittleTextView.setText(Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude()));
-                }
-            }
-        });
-
         // get references to widgets
         tittleTextView = (TextView) findViewById(R.id.titleTextView);
+        positionTextView = (TextView) findViewById(R.id.positionTextView);
         final CheckBox[] checkBoxs = new CheckBox[10];
         checkBoxs[0] = (CheckBox) findViewById(R.id.CheckBox1);
         checkBoxs[1] = (CheckBox) findViewById(R.id.CheckBox2);
@@ -97,6 +77,8 @@ public class ProblemsActivity extends Activity {
         textViews[9] = (TextView) findViewById(R.id.TextView10);
         sendButton = (Button) findViewById(R.id.SendButton);
 
+        getPosition();
+
         // get the database object
         db = new MyEmergencyDB(this);
 
@@ -114,6 +96,7 @@ public class ProblemsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (sendChecked(checkBoxs)) {
+
                     HashMap<String, String> emergenza = new HashMap<String, String>();  //Deve contenere una coppia chiave valore dei dati da passare in post.
                     Information information = db.getInformation(informationId);
                     emergenza.put("nome", information.getName());
@@ -123,13 +106,13 @@ public class ProblemsActivity extends Activity {
                     emergenza.put("cellulare", information.getTelephone());
                     if (position != null) {
                         String coordinate = String.valueOf(position.getLatitude()) + ", " + String.valueOf(position.getLongitude());
-                        emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
+                        emergenza.put("coordinate", coordinate);
                     }
                     Iterator iterator = problems.iterator();
                     int i = 0;
                     String sintomi = "";
                     boolean first = true;
-                    while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
+                    while (iterator.hasNext()) {
                         Problem problem = (Problem) iterator.next();
                         if (checkBoxs[i].isChecked()) {
                             //emergenza.put("sintomi[]", problem.getName());
@@ -170,6 +153,10 @@ public class ProblemsActivity extends Activity {
     @Override
     public void onResume(){
         super.onResume();
+        getPosition();
+    }
+
+    private void getPosition() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -187,10 +174,10 @@ public class ProblemsActivity extends Activity {
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
                     position = location;
-                    tittleTextView.setText(Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude()));
+                    positionTextView.setText(Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude()));
+                    positionTextView.setVisibility(View.VISIBLE);
                 }
             }
         });
-
     }
 }

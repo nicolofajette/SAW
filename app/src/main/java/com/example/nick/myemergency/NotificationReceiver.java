@@ -14,8 +14,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class NotificationReceiver extends BroadcastReceiver {
     public static final int NOTIFICATION_ID = 1;
-    private NotificationManager notificationManager;
     NotificationCompat.Builder builder;
+    private MyEmergencyDB db;
 
     public NotificationReceiver(){
 
