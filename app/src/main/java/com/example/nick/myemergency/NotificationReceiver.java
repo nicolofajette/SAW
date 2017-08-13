@@ -29,14 +29,15 @@ public class NotificationReceiver extends BroadcastReceiver {
         String messageType = gcm.getMessageType(intent);
         if(!extras.isEmpty()){
             if(GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)){
+                String msg = intent.getStringExtra("message");  //Messaggio inviato dal GCM
                 //Emetti notifica
-                sendNotification(context);
+                sendNotification(context, msg);
             }
         }
     }
 
 
-    public void sendNotification(Context context) {
+    public void sendNotification(Context context, String msg) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context);
@@ -51,7 +52,9 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         mBuilder.setSmallIcon(R.drawable.ic_launcher);
         mBuilder.setContentTitle("Richiesta accettata");
-        mBuilder.setContentText("I soccorsi sono in arrivo");
+        mBuilder.setContentText(msg);
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); //Recupero il suono di default delle notifiche
+        mBuilder.setSound(uri);
 
         NotificationManager mNotificationManager =
 

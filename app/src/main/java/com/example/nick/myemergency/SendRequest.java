@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -230,6 +232,8 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             mBuilder.setContentTitle("Richiesta non inviata");
             mBuilder.setContentText("Errore nell'invio della richiesta");
         }
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); //Recupero il suono di default delle notifiche
+        mBuilder.setSound(uri);
 
         NotificationManager mNotificationManager =
 
