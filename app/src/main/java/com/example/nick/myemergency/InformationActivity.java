@@ -1,14 +1,21 @@
 package com.example.nick.myemergency;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -25,6 +32,8 @@ public class InformationActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
+
+        final Context context = getApplicationContext();
 
         // get database
         db = new MyEmergencyDB(getApplicationContext());
@@ -53,6 +62,8 @@ public class InformationActivity extends FragmentActivity {
             tabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
         }
 
+        setLocation(context);
+
     }
 
     @Override
@@ -78,34 +89,44 @@ public class InformationActivity extends FragmentActivity {
         return true;
     }
 
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menuAddTask:
-                Intent intent = new Intent(this, AddEditActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("editMode", false);
-                intent.putExtra("first", false);
-                startActivity(intent);
-                break;
-            case R.id.menuDelete:
-                // Hide all tasks marked as cancel
-                ArrayList<Information> informations = db.getInformations();
-                for (Information information : informations){
-                    if (information.getCancelDateMillis() > 0){
-                        information.setHidden(Information.TRUE);
-                        //db.updateInformation(information);
-                        db.deleteInformation(information);
-                    }
-                }
-                // Refresh list
-                InformationFragment currentFragment = (InformationFragment)
-                        getSupportFragmentManager().
-                                findFragmentByTag(tabHost.getCurrentTabTag());
-                currentFragment.refreshTaskList();
+    private void setLocation(Context con) {
+        final Context context = con;
+        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
 
-                break;
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage(context.getResources().getString(R.string.gps_network_not_enabled));
+            dialog.setPositiveButton(context.getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(myIntent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton(context.getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+            dialog.show();
         }
-        return super.onOptionsItemSelected(item);
-    }*/
+    }
+
 }

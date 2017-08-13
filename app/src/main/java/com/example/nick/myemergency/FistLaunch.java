@@ -16,14 +16,18 @@ public class FistLaunch extends Activity {
         // get database
         db = new MyEmergencyDB(getApplicationContext());
 
+        GCMRegistration gcmRegistration = new GCMRegistration(FistLaunch.this);
+        if(gcmRegistration.getRegid() == null){
+            //Errore registrazione gcm --> Impossibile ricevere notifiche
+        }
+
         sharedPreferences = getSharedPreferences("ShaPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         boolean  firstTime = sharedPreferences.getBoolean("first", true);
         if(firstTime || !db.testNotEmpty()) {
             editor.putBoolean("first",false);
-            editor.commit();
-            Intent intent = new Intent(this,  AddEditActivity.class);
-            intent.putExtra("first", true);
+            editor.apply();
+            Intent intent = new Intent(this,  TutorialActivity.class);
             startActivity(intent);
             finish();
         }
@@ -35,4 +39,3 @@ public class FistLaunch extends Activity {
 
     }
 }
-

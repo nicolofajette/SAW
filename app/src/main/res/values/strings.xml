@@ -1,26 +1,41 @@
 <resources>
 
-    <string name="app_name">Information</string>
-    
+    <string name="app_name">My Emergency</string>
+    <string name="title_activity_settings">Impostazioni</string>
+
     <!-- information screen -->
     <string name="information_name">Name</string>
     <string name="information_surname">Surname</string>
+
+    <!-- tutorial -->
+    <string name="title_tutorial1">Benvenuto in My Emergency App</string>
+    <string name="title_tutorial2">Scopri la nostra app</string>
+    <string name="text_tutorial">My Emergency ti permette di effettuare richieste di emergenza in pochissimi click, senza dover chiamare i soccorsi.\nPer essere efficace la nostra applicazione necessita di una connesione internet e del servizio di localizzazione attivo.\n\nInserisci i dati delle persone che potrebbero avere bisogno della tua applicazione e per ognuna i numeri di emergenza da contattare via sms o whatsapp in caso di necessità.\nL\'invio di messaggi sms potrebbe richiedere spese aggiuntive in base al contratto con l\'operatore.\n\nModifica i dati di ogni utente con un click lungo sulla sua icona.\n\nRicevi informazioni sulle tue richieste con il nostro servizio di notifica.</string>
+    <string name="description_image">Icona</string>
+    <string name="button_skip">Salta tutorial</string>
+    <string name="button_continue">Continua</string>
     
+
     <!-- add/edit screen -->
     <string name="hint_name">Nome</string>
     <string name="hint_surname">Cognome</string>
     <string name="hint_CF">Codice Fiscale</string>
     <string name="hint_data">Data di nascita</string>
     <string name="hint_telephone">Telefono</string>
-    <string name="contatti_utili">Contatti utili</string>
+    <string name="contatti_utili">Contatti utili: inserisci il numero di telefono in base alla tipologia di messagistica scelta</string>
     <string name="hint_contact1">Contatto 1</string>
     <string name="hint_contact2">Contatto2</string>
-    
+    <string name="radioNone">Nessuno</string>
+    <string name="radioMessage">Messaggi</string>
+    <string name="radioWhatsapp">Whatsapp</string>
+
     <!-- menu items -->
     <string name="add_task">Add Information</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_tutorial">Tutorial</string>
 
     <!-- problems activity -->
     <string name="titleTextView_text">Inserisca le informazioni per il soccorso</string>string>
@@ -30,5 +45,27 @@
     <string name="event_type">Tipo</string>
     <string name="event_name">Nome</string>
     <string name="event_time">Ora</string>
+
+    <!-- preferences -->
+    <string name="remember_phone_number">Ricorda il numero di telefono</string>
+    <string name="remember_phone_number_summary">Utilizza sempre lo stesso numero di telefono come contatto</string>
+    <string name="messages">Scegli metodo di messaggistica</string>
+    <string name="messages_summary">Scegli il metodo di messagistica da utilizzare in caso di emergenza: utilizzando gli SMS è possibile inviare un messaggio a due contatti di emergenza, con whatsapp è possibile aprire l\'applicazione di messaggistica ed inviare un messaggio a un solo utente altrimenti è possibile scegliere di non inviare nulla, in ogni caso la tua richiesta sarà ricevuta ed elaborata da un nostro operatore. I messaggi inviati sono generati automaticamente dalla applicazione.</string>
+    <string name="messages_title">Tipo di messaggi</string>
+    <string-array name="messages_keys">
+        <item>Nessuno</item>
+        <item>SMS</item>
+        <item>Whatsapp</item>
+    </string-array>
+    <string-array name="messages_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="messages_default">0</string>
+
+    <string name="gps_network_not_enabled">Per l\'utilizzo del servizio è necessario attivare la localizzazione</string>
+    <string name="open_location_settings">Apri localizzazione</string>
+    <string name="Cancel">Annulla</string>
 
 </resources>

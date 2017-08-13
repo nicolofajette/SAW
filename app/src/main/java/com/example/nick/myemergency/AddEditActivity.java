@@ -2,9 +2,15 @@ package com.example.nick.myemergency;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
+import android.support.annotation.IdRes;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,11 +19,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,15 +47,32 @@ public class AddEditActivity extends Activity
     private EditText telephoneEditText;
     private EditText contact1EditText;
     private EditText contact2EditText;
+    private RadioGroup radioSendMessages;
 
     private MyEmergencyDB db;
     private boolean editMode;
     private boolean firstTime;
     private Information information;
 
+    // define messages constants
+    private final int MESSAGES_NONE = 0;
+    private final int MESSAGES_NORMAL = 1;
+    private final int MESSAGES_WHATSAPP = 2;
+
+    // set up preferences
+    private SharedPreferences prefs;
+    private Boolean rememberPhoneNumber = true;
+    private int messages_type = MESSAGES_NONE;
+    final Calendar myCalendar = Calendar.getInstance();
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        // get default SharedPreferences object
+        prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         // get references to widgets
         textViewInfo = (TextView) findViewById(R.id.textViewInfo);
@@ -50,8 +81,36 @@ public class AddEditActivity extends Activity
         CFEditText = (EditText) findViewById(R.id.CFEditText);
         anniEditText = (EditText) findViewById(R.id.anniEditText);
         telephoneEditText = (EditText) findViewById(R.id.telephoneEditText);
+        radioSendMessages = (RadioGroup) findViewById(R.id.radioSendMessages);
         contact1EditText = (EditText) findViewById(R.id.contact1EditText);
         contact2EditText = (EditText) findViewById(R.id.contact2EditText);
+
+
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        anniEditText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(AddEditActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         // set listeners
         nameEditText.setOnKeyListener(this);
@@ -59,8 +118,6 @@ public class AddEditActivity extends Activity
         CFEditText.setOnKeyListener(this);
         anniEditText.setOnKeyListener(this);
         telephoneEditText.setOnKeyListener(this);
-        contact1EditText.setOnKeyListener(this);
-        contact2EditText.setOnKeyListener(this);
 
         nameEditText.addTextChangedListener(new TextWatcher()  {
 
@@ -180,9 +237,9 @@ public class AddEditActivity extends Activity
         // get edit mode from intent
         Intent intent = getIntent();
         editMode = intent.getBooleanExtra("editMode", false);
-        firstTime = intent.getBooleanExtra("first", true);
-        if (editMode == false) {
-            if (firstTime == true) {
+        firstTime = intent.getBooleanExtra("first", false);
+        if (!editMode) {
+            if (firstTime) {
                 textViewInfo.setText("Inserisci i tuoi dati per poterli avere a disposizione nel momento del bisogno");
             } else {
                 textViewInfo.setText("Inserisci i dati di qualcuno che potrebbe avere bisogno");
@@ -191,15 +248,44 @@ public class AddEditActivity extends Activity
             textViewInfo.setText("Aggiornamento dei dati");
         }
 
-        /*String telephoneNumber = getMyPhoneNumber();
-        if (telephoneNumber.equals("error")) {*/
+        rememberPhoneNumber = prefs.getBoolean("pref_remember_phone_number", true);
+        messages_type = Integer.parseInt(prefs.getString("pref_messages", "0"));
+        if (!firstTime) {
+            if (!rememberPhoneNumber) {
+                telephoneEditText.setClickable(true);
+                telephoneEditText.setCursorVisible(true);
+                telephoneEditText.setFocusable(true);
+                telephoneEditText.setFocusableInTouchMode(true);
+            } else {
+                telephoneEditText.setText(db.getInformation(1).getTelephone());
+            }
+
+        } else {
             telephoneEditText.setClickable(true);
             telephoneEditText.setCursorVisible(true);
             telephoneEditText.setFocusable(true);
             telephoneEditText.setFocusableInTouchMode(true);
-        /*} else {
-            telephoneEditText.setText(getMy10DigitPhoneNumber());
-        }*/
+        }
+        ((RadioButton)radioSendMessages.getChildAt(messages_type)).setChecked(true);
+        for (int i = 0; i < radioSendMessages.getChildCount(); i++) {
+            radioSendMessages.getChildAt(i).setEnabled(false);
+        }
+
+        if (messages_type == MESSAGES_NONE) {
+            contact1EditText.setText(null);
+            contact2EditText.setText(null);
+            contact1EditText.setVisibility(View.INVISIBLE);
+            contact2EditText.setVisibility(View.INVISIBLE);
+        } else if (messages_type == MESSAGES_WHATSAPP) {
+            contact1EditText.setVisibility(View.VISIBLE);
+            contact2EditText.setText(null);
+            contact2EditText.setVisibility(View.INVISIBLE);
+        } else {
+            contact1EditText.setVisibility(View.VISIBLE);
+            contact2EditText.setVisibility(View.VISIBLE);
+            contact1EditText.setText(null);
+            contact2EditText.setText(null);
+        }
 
         // if editing
         if (editMode) {
@@ -212,10 +298,30 @@ public class AddEditActivity extends Activity
             surnameEditText.setText(information.getSurname());
             CFEditText.setText(information.getCodiceFiscale());
             anniEditText.setText(information.getDate_of_birth());
+            telephoneEditText.setClickable(true);
+            telephoneEditText.setCursorVisible(true);
+            telephoneEditText.setFocusable(true);
+            telephoneEditText.setFocusableInTouchMode(true);
             telephoneEditText.setText(information.getTelephone());
             contact1EditText.setText(information.getContact1());
             contact2EditText.setText(information.getContact2());
         }
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // get preferences
+        rememberPhoneNumber = prefs.getBoolean("pref_remember_phone_number", true);
+        messages_type = Integer.parseInt(prefs.getString("pref_message", "0"));
+
     }
 
     @Override
@@ -228,6 +334,11 @@ public class AddEditActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menuSave:
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 String name = nameEditText.getText().toString();
                 String surname = surnameEditText.getText().toString();
                 String CF = CFEditText.getText().toString();
@@ -236,19 +347,19 @@ public class AddEditActivity extends Activity
 
                 // if no informations, exit method
 
-                if (name == null || name.equals("")) {
+                if (name.equals("")) {
                     nameEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (surname == null || surname.equals("")) {
+                if (surname.equals("")) {
                     surnameEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (CF == null || CF.equals("")) {
+                if (CF.equals("")) {
                     CFEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (date_of_birth == null || date_of_birth.equals("")) {
+                if (date_of_birth.equals("")) {
                     anniEditText.setError("Questo campo non può essere vuoto");
                 }
-                if (telephone == null || telephone.equals("")) {
+                if (telephone.equals("")) {
                     telephoneEditText.setError("Questo campo non può essere vuoto");
                 }
                 if ((nameEditText.getError() == null && nameEditText.getText().length() != 0) &&
@@ -267,9 +378,8 @@ public class AddEditActivity extends Activity
                 }
                 break;
             case R.id.menuCancel:
-                if (!firstTime || editMode) {
                     this.finish();
-                }
+
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -318,28 +428,17 @@ public class AddEditActivity extends Activity
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             return true;
         }
-        /*else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            saveToDB();
-            return false;
-        }*/
         return false;
     }
 
-    /*private String getMyPhoneNumber(){
-        TelephonyManager mTelephonyMgr;
-        mTelephonyMgr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String number = mTelephonyMgr.getLine1Number();
-        if (mTelephonyMgr.getLine1Number().equals("") || mTelephonyMgr.getLine1Number()==null) {
-            return "error";
-        } else {
-            return mTelephonyMgr.getLine1Number();
-        }
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
+
+        anniEditText.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private String getMy10DigitPhoneNumber(){
-        String s = getMyPhoneNumber();
-        return s.substring(2);
-    }*/
+
 
     @Override
     public void onBackPressed() {

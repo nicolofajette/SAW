@@ -2,18 +2,19 @@ package com.example.nick.myemergency;
 
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -23,9 +24,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -38,6 +37,7 @@ public class ProblemsActivity extends Activity {
     private MyEmergencyDB db;
     private ArrayList<Problem> problems;
     private Location position;
+    private String problemstring = "";
 
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -113,57 +113,84 @@ public class ProblemsActivity extends Activity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> emergenza = new HashMap<String, String>();  //Deve contenere una coppia chiave valore dei dati da passare in post.
-                Information information = db.getInformation(informationId);
-                emergenza.put("nome", information.getName());
-                emergenza.put("cognome", information.getSurname());
-                emergenza.put("data_nascita", information.getDate_of_birth());
-                emergenza.put("codice_fiscale", information.getCodiceFiscale());
-                emergenza.put("cellulare", information.getTelephone());
-                //emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
-                Iterator iterator = problems.iterator();
-                int i = 0;
-                while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
-                    Problem problem = (Problem) iterator.next();
-                    if (checkBoxs[i].isChecked()) {
-                        emergenza.put(problem.getName(), "true");
+                if (sendChecked(checkBoxs)) {
+                    HashMap<String, String> emergenza = new HashMap<String, String>();  //Deve contenere una coppia chiave valore dei dati da passare in post.
+                    Information information = db.getInformation(informationId);
+                    emergenza.put("nome", information.getName());
+                    emergenza.put("cognome", information.getSurname());
+                    emergenza.put("data_nascita", information.getDate_of_birth());
+                    emergenza.put("codice_fiscale", information.getCodiceFiscale());
+                    emergenza.put("cellulare", information.getTelephone());
+                    if (position != null) {
+                        String coordinate = String.valueOf(position.getLatitude()) + ", " + String.valueOf(position.getLongitude());
+                        emergenza.put("coordinate", coordinate);  //TODO: aggiungere coordinate
                     }
-                    i++;
+                    Iterator iterator = problems.iterator();
+                    int i = 0;
+                    String sintomi = "";
+                    boolean first = true;
+                    while (iterator.hasNext()) {  //TODO: valutare se modificare sostituendo con xml element
+                        Problem problem = (Problem) iterator.next();
+                        if (checkBoxs[i].isChecked()) {
+                            //emergenza.put("sintomi[]", problem.getName());
+                            if(first){
+                                first = false;
+                            }else{
+                                sintomi += ", ";
+                            }
+                            sintomi += problem.getName();
+                            problemstring += problem.getName() + ", ";
+                        }
+                        i++;
+                    }
+                    emergenza.put("sintomi", sintomi);
+                    GCMRegistration gcmRegistration = new GCMRegistration(getApplicationContext());
+                    if(gcmRegistration.getRegid() == null){
+                        //Impossibile ricevere notifiche
+                        Log.d("GCM", "Errore gcm");
+                    }else{
+                        emergenza.put("regid", gcmRegistration.getRegid());
+                    }
+                    new SendRequest(getApplicationContext(), FILENAME, information, problemstring).execute(emergenza);
+                    ProblemsActivity.this.finish();
                 }
-                new SendRequest(getApplicationContext(), FILENAME).execute(emergenza);
-                Evento event = new Evento();
-                event.setType("INVIATO");
-                event.setName(information.getName() + " " + information.getSurname());
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                event.setTime(currentDateTimeString);
-                db.insertEvent(event);
-                sendNotification();
-                ProblemsActivity.this.finish();
             }
         });
     }
 
-    public void sendNotification() {
+    public boolean sendChecked(CheckBox[] checkBoxs) {
+        for (int i=0; i<checkBoxs.length; i++) {
+            if (checkBoxs[i].isChecked()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this);
-        mBuilder.setAutoCancel(true);
+    @Override
+    public void onResume(){
+        super.onResume();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    position = location;
+                    tittleTextView.setText(Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude()));
+                }
+            }
+        });
 
-        //Create the intent that’ll fire when the user taps the notification//
-        Intent intent = new Intent(getApplicationContext(), InformationActivity.class);
-        intent.putExtra("notifica", 1);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-
-        mBuilder.setContentIntent(pendingIntent);
-
-        mBuilder.setSmallIcon(R.drawable.ic_launcher);
-        mBuilder.setContentTitle("Richiesta inviata");
-        mBuilder.setContentText("Le risponderemo al più presto");
-
-        NotificationManager mNotificationManager =
-
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        mNotificationManager.notify(001, mBuilder.build());
     }
 }
