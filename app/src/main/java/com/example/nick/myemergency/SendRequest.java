@@ -169,7 +169,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             db = new MyEmergencyDB(context);
             Information possessor = db.getInformation(1);
             Evento event = new Evento();
-            event.setType("INVIATO");
+            event.setType("RICHIESTA INVIATA");
             event.setName(information.getName() + " " + information.getSurname());
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
             event.setTime(currentDateTimeString);
@@ -205,6 +205,13 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             }
             sendNotification(true);
         }else{
+            db = new MyEmergencyDB(context);
+            Evento event = new Evento();
+            event.setType("RICHIESTA NON INVIATA");
+            event.setName(information.getName() + " " + information.getSurname());
+            String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+            event.setTime(currentDateTimeString);
+            db.insertEvent(event);
             sendNotification(false);
         }
         Log.d("Esito connessione", result);
