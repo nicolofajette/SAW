@@ -10,7 +10,7 @@
     <!-- tutorial -->
     <string name="title_tutorial1">Benvenuto in My Emergency App</string>
     <string name="title_tutorial2">Scopri la nostra app</string>
-    <string name="text_tutorial">My Emergency ti permette di effettuare richieste di emergenza in pochissimi click, senza dover chiamare i soccorsi.\nPer essere efficace la nostra applicazione necessita di una connesione internet e del servizio di localizzazione attivo.\n\nInserisci i dati delle persone che potrebbero avere bisogno della tua applicazione e per ognuna i numeri di telefono di riferimento da contattare via sms o whatsapp in caso di necessità.\nL\'invio di messaggi sms potrebbe richiedere spese aggiuntive in base al contratto con l\'operatore.\n\nModifica i dati di ogni utente con un click lungo sulla sua icona.\n\nRicevi informazioni sulle tue richieste con il nostro servizio di notifica.</string>
+    <string name="text_tutorial">My Emergency ti permette di effettuare richieste di emergenza in pochissimi click, senza dover chiamare i soccorsi.\nPer essere efficace la nostra applicazione necessita di una connesione internet e del servizio di localizzazione attivo (gps).\n\nInserisci i dati delle persone che potrebbero avere bisogno della tua applicazione e per ognuna i numeri di telefono di riferimento da contattare via sms o whatsapp in caso di necessità.\nL\'invio di messaggi sms potrebbe richiedere spese aggiuntive in base al contratto con l\'operatore.\n\nModifica i dati di ogni utente con un click lungo sulla sua icona.\n\nRicevi informazioni sulle tue richieste con il nostro servizio di notifica.</string>
     <string name="description_image">Icona</string>
     <string name="button_skip">Salta tutorial</string>
     <string name="button_continue">Continua</string>
