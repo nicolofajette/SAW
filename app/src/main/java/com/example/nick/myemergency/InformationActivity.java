@@ -44,8 +44,8 @@ public class InformationActivity extends FragmentActivity {
         tabManager = new TabManager(this, tabHost, R.id.realtabcontent);
 
 
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec("Informazioni");
-        tabSpec.setIndicator("Informazioni");
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec("Emergenze");
+        tabSpec.setIndicator("Emergenze");
         tabManager.addTab(tabSpec, InformationFragment.class, null);
         TabHost.TabSpec tabSpec1 = tabHost.newTabSpec("Eventi");
         tabSpec1.setIndicator("Eventi");

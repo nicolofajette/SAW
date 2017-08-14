@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
     private CheckBox cancelCheckBox;
     private TextView nameTextView;
     private TextView surnameTextView;
+    private ImageView image;
 
     private Information information;
     private MyEmergencyDB db;
@@ -42,6 +44,8 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
         cancelCheckBox = (CheckBox) findViewById(R.id.cancelCheckBox);
         nameTextView = (TextView) findViewById(R.id.nameTextView);
         surnameTextView = (TextView) findViewById(R.id.surnameTextView);
+        image = (ImageView) findViewById(R.id.imageViewPhone);
+        image.setImageResource(R.drawable.next);
 
         if(i.getId() == 1) {
             cancelCheckBox.setVisibility(View.INVISIBLE);
@@ -60,13 +64,7 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
         information = i;
         nameTextView.setText(information.getName());
         surnameTextView.setText(information.getSurname());
-
-        if (information.getCancelDateMillis() > 0){
-            cancelCheckBox.setChecked(true);
-        }
-        else{
-            cancelCheckBox.setChecked(false);
-        }
+        cancelCheckBox.setChecked(false);
     }
 
     @Override

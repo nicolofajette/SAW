@@ -39,6 +39,7 @@
 
     <!-- problems activity -->
     <string name="titleTextView_text">Inserisca le informazioni per il soccorso</string>string>
+    <string name="positionTextView_text">Posizione non disponibile</string>
     <string name="invia">Invia</string>
 
     <!-- event activity -->
@@ -47,10 +48,12 @@
     <string name="event_time">Ora</string>
 
     <!-- preferences -->
+    <string name="summary_tittle"></string>
+    <string name="summary_text">Impostazioni per l\'inserimento dei dati delle persone che potrebbero richiedere soccorso.\r\nE\' possibile decidere se utilizzare sempre lo stesso numero di cellulare che sarà inserito nella prossima schermata ed è possibile selezionare la tipologia di messagistica da utilizzare per inviare messaggi di avviso in caso di emergenza(è selezionabile solo in questa schermata!)</string>
     <string name="remember_phone_number">Ricorda il numero di telefono</string>
     <string name="remember_phone_number_summary">Utilizza sempre lo stesso numero di telefono come contatto</string>
     <string name="messages">Scegli metodo di messaggistica</string>
-    <string name="messages_summary">Scegli il metodo di messagistica da utilizzare in caso di emergenza: utilizzando gli SMS è possibile inviare un messaggio a due contatti di emergenza, con whatsapp è possibile aprire l\'applicazione di messaggistica ed inviare un messaggio a un solo utente altrimenti è possibile scegliere di non inviare nulla, in ogni caso la tua richiesta sarà ricevuta ed elaborata da un nostro operatore. I messaggi inviati sono generati automaticamente dalla applicazione.</string>
+    <string name="messages_summary">Cliccando è possibile scegliere il metodo di messagistica da utilizzare in caso di emergenza: utilizzando gli SMS è possibile inviare un messaggio a due contatti di emergenza, con whatsapp è possibile aprire l\'applicazione di messaggistica ed inviare un messaggio a un solo utente altrimenti è possibile scegliere di non inviare nulla, in ogni caso la tua richiesta sarà ricevuta ed elaborata da un nostro operatore. I messaggi inviati sono generati automaticamente dalla applicazione.</string>
     <string name="messages_title">Tipo di messaggi</string>
     <string-array name="messages_keys">
         <item>Nessuno</item>
@@ -67,5 +70,7 @@
     <string name="gps_network_not_enabled">Per l\'utilizzo del servizio è necessario attivare la localizzazione</string>
     <string name="open_location_settings">Apri localizzazione</string>
     <string name="Cancel">Annulla</string>
+
+    <string name="phone_image">immagine cellulare</string>
 
 </resources>

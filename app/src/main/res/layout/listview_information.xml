@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayoutInformationItem"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/custom_shape">
 
     <CheckBox
         android:id="@+id/cancelCheckBox"
@@ -37,5 +39,16 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageViewPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/next"
+        android:contentDescription="@string/phone_image"
+        android:layout_marginEnd="37dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/surnameTextView" />
 
 </RelativeLayout>
