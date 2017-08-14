@@ -10,9 +10,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
-/**
- * Created by Nick on 30/07/2017.
- */
 
 public class GCMRegistration {
     private static final String BACKEND_URL = "https://webdev.dibris.unige.it/~S4078757/PAA/register.php";
