@@ -104,20 +104,42 @@
 
             </RadioGroup>
 
-            <EditText
-                android:id="@+id/contact1EditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_contact1"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/contact2EditText"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/contact1Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.35"
+                    android:text="@string/rubrica"/>
+                <EditText
+                    android:id="@+id/contact1EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.65"
+                    android:hint="@string/hint_contact1"
+                    android:inputType="number" />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_contact2"
-                android:inputType="number" />
-
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/contact2Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.35"
+                    android:text="@string/rubrica"/>
+                <EditText
+                    android:id="@+id/contact2EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.65"
+                    android:hint="@string/hint_contact2"
+                    android:inputType="number" />
+            </LinearLayout>
         </LinearLayout>
 
 

@@ -7,13 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.IdRes;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -47,6 +52,8 @@ public class AddEditActivity extends Activity
     private EditText telephoneEditText;
     private EditText contact1EditText;
     private EditText contact2EditText;
+    private Button contact1Button;
+    private Button contact2Button;
     private RadioGroup radioSendMessages;
 
     private MyEmergencyDB db;
@@ -64,6 +71,9 @@ public class AddEditActivity extends Activity
     private Boolean rememberPhoneNumber = true;
     private int messages_type = MESSAGES_NONE;
     final Calendar myCalendar = Calendar.getInstance();
+
+    public final int PICK_CONTACT1 = 2015;
+    public final int PICK_CONTACT2 = 3015;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -83,8 +93,23 @@ public class AddEditActivity extends Activity
         telephoneEditText = (EditText) findViewById(R.id.telephoneEditText);
         radioSendMessages = (RadioGroup) findViewById(R.id.radioSendMessages);
         contact1EditText = (EditText) findViewById(R.id.contact1EditText);
+        contact1Button = (Button) findViewById(R.id.contact1Button);
+        contact1Button.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(i, PICK_CONTACT1);
+            }
+        });
         contact2EditText = (EditText) findViewById(R.id.contact2EditText);
-
+        contact2Button = (Button) findViewById(R.id.contact2Button);
+        contact2Button.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(i, PICK_CONTACT2);
+            }
+        });
 
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -449,5 +474,22 @@ public class AddEditActivity extends Activity
 
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_CONTACT1 && resultCode == RESULT_OK) {
+            Uri contactUri = data.getData();
+            Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
+            cursor.moveToFirst();
+            int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            contact1EditText.setText(cursor.getString(column));
+        } else if (requestCode == PICK_CONTACT2 && resultCode == RESULT_OK) {
+            Uri contactUri = data.getData();
+            Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
+            cursor.moveToFirst();
+            int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            contact2EditText.setText(cursor.getString(column));
+        }
     }
 }
