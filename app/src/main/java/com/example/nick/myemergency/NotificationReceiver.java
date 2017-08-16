@@ -61,7 +61,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         mBuilder.setContentIntent(pendingIntent);
 
-        mBuilder.setSmallIcon(R.drawable.ic_launcher);
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
         mBuilder.setContentTitle("Richiesta accettata");
         mBuilder.setContentText(msg);
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); //Recupero il suono di default delle notifiche
