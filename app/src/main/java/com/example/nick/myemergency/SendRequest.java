@@ -183,7 +183,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
                     if (information.getContact1() != null && !information.getContact1().equals("") && information.getContact1().length() > 1) {
                         sendSMS(information.getContact1(), text);
                     }
-                    if (information.getContact2() != null && information.getContact2().equals("") && information.getContact2().length() > 1) {
+                    if (information.getContact2() != null && !information.getContact2().equals("") && information.getContact2().length() > 1) {
                         sendSMS(information.getContact2(), text);
                     }
                 } else if (messages_type == MESSAGES_WHATSAPP) {
