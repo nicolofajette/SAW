@@ -175,7 +175,6 @@ public class ProblemsActivity extends Activity {
                 if (location != null) {
                     position = location;
                     positionTextView.setText(Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude()));
-                    positionTextView.setVisibility(View.VISIBLE);
                 }
             }
         });

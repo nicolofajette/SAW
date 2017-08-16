@@ -34,7 +34,7 @@ public class GCMRegistration {
             private ProgressDialog dialog = null;
 
             protected void onPreExecute(){
-                dialog = ProgressDialog.show(context, "Registrazione presso CGM", "Tentativo in corso..", true, false);
+                //dialog = ProgressDialog.show(context, "Registrazione presso CGM", "Tentativo in corso..", true, false);
             };
 
             @Override
@@ -53,7 +53,7 @@ public class GCMRegistration {
 
             @Override
             protected void onPostExecute(String regid){
-                dialog.dismiss();
+                //dialog.dismiss();
                 if(regid != null){
                     saveRegId(regid);
                 }else{

@@ -30,6 +30,8 @@ public class SettingsFragment extends PreferenceFragment
             PreferenceScreen screen = getPreferenceScreen();
             Preference pref = getPreferenceManager().findPreference("pref_messages");
             screen.removePreference(pref);
+            Preference prefText = getPreferenceManager().findPreference("summary_key");
+            screen.removePreference(prefText);
         } else {
             if (!getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
                 ListPreference messages_type = (ListPreference) findPreference("pref_messages");

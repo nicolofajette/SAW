@@ -51,7 +51,7 @@ public class AddEditActivity extends Activity
 
     private MyEmergencyDB db;
     private boolean editMode;
-    private boolean firstTime;
+    private boolean firstTime = false;
     private Information information;
 
     // define messages constants
@@ -378,7 +378,14 @@ public class AddEditActivity extends Activity
                 }
                 break;
             case R.id.menuCancel:
-                    this.finish();
+                    if(!firstTime) {
+                        this.finish();
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                        intent.putExtra("first", true);
+                        startActivity(intent);
+                        finish();
+                    }
 
                 break;
         }
