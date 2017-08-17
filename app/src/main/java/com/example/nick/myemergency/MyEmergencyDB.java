@@ -118,16 +118,16 @@ public class MyEmergencyDB {
             db.execSQL(CREATE_EVENT_TABLE);
 
             // insert problems
-            db.execSQL("INSERT INTO problems VALUES (1, 'infarto')");
-            db.execSQL("INSERT INTO problems VALUES (2, 'non respira')");
-            db.execSQL("INSERT INTO problems VALUES (3, 'non cosciente')");
-            db.execSQL("INSERT INTO problems VALUES (4, 'non risponde')");
-            db.execSQL("INSERT INTO problems VALUES (5, 'emorragia')");
+            db.execSQL("INSERT INTO problems VALUES (1, 'non risponde')");
+            db.execSQL("INSERT INTO problems VALUES (2, 'non cosciente')");
+            db.execSQL("INSERT INTO problems VALUES (3, 'non respira')");
+            db.execSQL("INSERT INTO problems VALUES (4, 'infarto')");
+            db.execSQL("INSERT INTO problems VALUES (5, 'emorragia esterna')");
             db.execSQL("INSERT INTO problems VALUES (6, 'ustione')");
             db.execSQL("INSERT INTO problems VALUES (7, 'frattura')");
             db.execSQL("INSERT INTO problems VALUES (8, 'incidente stradale')");
-            db.execSQL("INSERT INTO problems VALUES (9, 'incidente sul lavoro')");
-            db.execSQL("INSERT INTO problems VALUES (10, 'incidente casalingo')");
+            db.execSQL("INSERT INTO problems VALUES (9, 'incidente casalingo')");
+            db.execSQL("INSERT INTO problems VALUES (10, 'incidente sul lavoro')");
         }
 
         @Override
