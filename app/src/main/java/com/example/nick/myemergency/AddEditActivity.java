@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 
 public class AddEditActivity extends Activity
-        implements OnKeyListener {
+        implements OnKeyListener, RadioGroup.OnCheckedChangeListener {
 
     private TextView textViewInfo;
     private EditText nameEditText;
@@ -138,6 +138,7 @@ public class AddEditActivity extends Activity
         });
 
         // set listeners
+        radioSendMessages.setOnCheckedChangeListener(this);
         nameEditText.setOnKeyListener(this);
         surnameEditText.setOnKeyListener(this);
         CFEditText.setOnKeyListener(this);
@@ -275,7 +276,11 @@ public class AddEditActivity extends Activity
 
         rememberPhoneNumber = prefs.getBoolean("pref_remember_phone_number", true);
         messages_type = Integer.parseInt(prefs.getString("pref_messages", "0"));
+        ((RadioButton)radioSendMessages.getChildAt(messages_type)).setChecked(true);
         if (!firstTime) {
+            for(int i = 0; i < radioSendMessages.getChildCount(); i++){
+                ((RadioButton)radioSendMessages.getChildAt(i)).setEnabled(false);
+            }
             if (!rememberPhoneNumber) {
                 telephoneEditText.setClickable(true);
                 telephoneEditText.setCursorVisible(true);
@@ -291,23 +296,25 @@ public class AddEditActivity extends Activity
             telephoneEditText.setFocusable(true);
             telephoneEditText.setFocusableInTouchMode(true);
         }
-        ((RadioButton)radioSendMessages.getChildAt(messages_type)).setChecked(true);
-        for (int i = 0; i < radioSendMessages.getChildCount(); i++) {
-            radioSendMessages.getChildAt(i).setEnabled(false);
-        }
 
         if (messages_type == MESSAGES_NONE) {
             contact1EditText.setText(null);
             contact2EditText.setText(null);
             contact1EditText.setVisibility(View.INVISIBLE);
+            contact1Button.setVisibility(View.INVISIBLE);
             contact2EditText.setVisibility(View.INVISIBLE);
+            contact2Button.setVisibility(View.INVISIBLE);
         } else if (messages_type == MESSAGES_WHATSAPP) {
             contact1EditText.setVisibility(View.VISIBLE);
+            contact1Button.setVisibility(View.VISIBLE);
             contact2EditText.setText(null);
             contact2EditText.setVisibility(View.INVISIBLE);
+            contact2Button.setVisibility(View.INVISIBLE);
         } else {
             contact1EditText.setVisibility(View.VISIBLE);
+            contact1Button.setVisibility(View.VISIBLE);
             contact2EditText.setVisibility(View.VISIBLE);
+            contact2Button.setVisibility(View.VISIBLE);
             contact1EditText.setText(null);
             contact2EditText.setText(null);
         }
@@ -441,6 +448,9 @@ public class AddEditActivity extends Activity
         information.setContact1(contact1);
         information.setContact2(contact2);
 
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("pref_messages", Integer.toString(messages_type));
+        editor.apply();
 
         // update or insert task
         if (editMode) {
@@ -471,7 +481,6 @@ public class AddEditActivity extends Activity
     }
 
 
-
     @Override
     public void onBackPressed() {
     }
@@ -490,6 +499,38 @@ public class AddEditActivity extends Activity
             cursor.moveToFirst();
             int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             contact2EditText.setText(cursor.getString(column));
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        switch (checkedId) {
+            case R.id.radioNone:
+                contact1EditText.setText(null);
+                contact2EditText.setText(null);
+                contact1EditText.setVisibility(View.INVISIBLE);
+                contact1Button.setVisibility(View.INVISIBLE);
+                contact2EditText.setVisibility(View.INVISIBLE);
+                contact2Button.setVisibility(View.INVISIBLE);
+                messages_type = MESSAGES_NONE;
+                break;
+            case R.id.radioMessage:
+                contact1EditText.setVisibility(View.VISIBLE);
+                contact2EditText.setVisibility(View.VISIBLE);
+                contact1Button.setVisibility(View.VISIBLE);
+                contact2Button.setVisibility(View.VISIBLE);
+                messages_type = MESSAGES_NORMAL;
+                break;
+            case R.id.radioWhatsapp:
+                contact1EditText.setVisibility(View.VISIBLE);
+                contact1Button.setVisibility(View.VISIBLE);
+                contact2EditText.setText(null);
+                contact2EditText.setVisibility(View.INVISIBLE);
+                contact2Button.setVisibility(View.INVISIBLE);
+                messages_type = MESSAGES_WHATSAPP;
+                break;
+            default:
+                break;
         }
     }
 }
