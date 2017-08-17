@@ -82,7 +82,7 @@ public class AddEditActivity extends Activity
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // get default SharedPreferences object
-        prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         // get references to widgets
         textViewInfo = (TextView) findViewById(R.id.textViewInfo);
@@ -279,7 +279,7 @@ public class AddEditActivity extends Activity
         ((RadioButton)radioSendMessages.getChildAt(messages_type)).setChecked(true);
         if (!firstTime) {
             for(int i = 0; i < radioSendMessages.getChildCount(); i++){
-                ((RadioButton)radioSendMessages.getChildAt(i)).setEnabled(false);
+                radioSendMessages.getChildAt(i).setEnabled(false);
             }
             if (!rememberPhoneNumber) {
                 telephoneEditText.setClickable(true);
@@ -448,10 +448,6 @@ public class AddEditActivity extends Activity
         information.setContact1(contact1);
         information.setContact2(contact2);
 
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("pref_messages", Integer.toString(messages_type));
-        editor.apply();
-
         // update or insert task
         if (editMode) {
             db.updateInformation(information);
@@ -492,13 +488,23 @@ public class AddEditActivity extends Activity
             Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
             cursor.moveToFirst();
             int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-            contact1EditText.setText(cursor.getString(column));
+            String phoneNo = cursor.getString(column);
+            Log.d("pluto",phoneNo.substring(0,3));
+            if (phoneNo.substring(0,3).equals("+39")) {
+
+                phoneNo = phoneNo.substring(3);
+            }
+            contact1EditText.setText(phoneNo);
         } else if (requestCode == PICK_CONTACT2 && resultCode == RESULT_OK) {
             Uri contactUri = data.getData();
             Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
             cursor.moveToFirst();
             int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-            contact2EditText.setText(cursor.getString(column));
+            String phoneNo = cursor.getString(column);
+            if (phoneNo.substring(0,3).equals("+39")) {
+                phoneNo = phoneNo.substring(3);
+            }
+            contact2EditText.setText(phoneNo);
         }
     }
 
@@ -532,5 +538,9 @@ public class AddEditActivity extends Activity
             default:
                 break;
         }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("pref_messages", Integer.toString(messages_type));
+        editor.commit();
     }
 }
