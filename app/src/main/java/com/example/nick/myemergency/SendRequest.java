@@ -231,7 +231,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
 
         mBuilder.setContentIntent(pendingIntent);
 
-        mBuilder.setSmallIcon(R.drawable.ic_launcher);
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
         if (condition) {
             mBuilder.setContentTitle("Richiesta inviata");
             mBuilder.setContentText("Le risponderemo al più presto");

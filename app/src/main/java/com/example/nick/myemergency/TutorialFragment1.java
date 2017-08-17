@@ -29,7 +29,7 @@ public class TutorialFragment1 extends Fragment {
         skipButton.setPaintFlags(skipButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         continueButton = (Button) view.findViewById(R.id.buttonContinue);
         image = (ImageView) view.findViewById(R.id.imageView);
-        image.setImageResource(R.drawable.ic_launcher);
+        image.setImageResource(R.mipmap.ic_launcher);
 
         skipButton.setOnClickListener(new View.OnClickListener() {
 

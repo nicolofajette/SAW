@@ -45,7 +45,7 @@ public class InformationLayout extends RelativeLayout implements View.OnClickLis
         nameTextView = (TextView) findViewById(R.id.nameTextView);
         surnameTextView = (TextView) findViewById(R.id.surnameTextView);
         image = (ImageView) findViewById(R.id.imageViewPhone);
-        image.setImageResource(R.drawable.next);
+        image.setImageResource(R.mipmap.emergency);
 
         if(i.getId() == 1) {
             cancelCheckBox.setVisibility(View.INVISIBLE);
