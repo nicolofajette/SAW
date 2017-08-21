@@ -24,7 +24,7 @@ public class SettingsFragment extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         firstTime = ((SettingsActivity) getActivity()).getFirstTime();
         if (!firstTime) {
             PreferenceScreen screen = getPreferenceScreen();

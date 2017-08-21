@@ -178,6 +178,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
             messages_type = Integer.parseInt(prefs.getString("pref_messages", "0"));
             String text = "E' stata inviata una richiesta di emergenza per " + information.getName() + " " + information.getSurname() + " con queste problematiche: " + problemstring + "dal cellulare di " + possessor.getName() + " " + possessor.getSurname();
+            Log.d("Pippo",Integer.toString(text.length()));
             if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
                 if (messages_type == MESSAGES_NORMAL) {
                     if (information.getContact1() != null && !information.getContact1().equals("") && information.getContact1().length() > 1) {
@@ -252,12 +253,17 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
     public void sendSMS(String phoneNo, String msg) {
         try {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            if (msg.length()<160) {
+                smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+            } else {
+                ArrayList<String> parts = smsManager.divideMessage(msg);
+                smsManager.sendMultipartTextMessage(phoneNo, null, parts, null, null);
+            }
             Toast.makeText(context, "Messagio Inviato",
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         } catch (Exception ex) {
             Toast.makeText(context,ex.getMessage().toString(),
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
             ex.printStackTrace();
         }
     }
