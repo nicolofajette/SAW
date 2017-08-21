@@ -10,7 +10,7 @@
     <!-- tutorial -->
     <string name="title_tutorial1">Benvenuto in My Emergency App</string>
     <string name="title_tutorial2">Scopri la nostra app</string>
-    <string name="text_tutorial">My Emergency ti permette di effettuare richieste di emergenza sanitaria in due click, senza dover chiamare il 112.\nPer essere efficace la nostra applicazione necessita di una connessione internet e del servizio di localizzazione attivo (gps).\n\nInserisci i dati delle persone che stanno intorno a te, crea la tua "rubrica" per essere pronto in caso di necessità.\nPer ognuno di essi scegli i numeri di telefono di riferimento da informare, via sms o whatsapp, della avvenuta richiesta di soccorso. (L\'invio di messaggi sms potrebbe richiedere spese aggiuntive in base al contratto con l\'operatore.\nPer utilizzare al meglio whatsapp è richiesto di selezionare un contatto esistente in rubrica)\n\nIn caso di emergenza ti basterà premere sul nome della persona infortunata per attivare una richiesta di soccorso nel luogo in cui ti trovi,potri inoltre segnalate alcuni sintomi che noti per facilitare i soccorritori.\n\nModifica i dati di ogni utente con un click lungo sulla sua icona.\n\nResta aggiornato sulle tue richieste grazie al nostro servizio di notifica.</string>
+    <string name="text_tutorial">My Emergency ti permette di effettuare richieste di emergenza sanitaria in due click, senza dover chiamare il 112.\nPer essere efficace la nostra applicazione necessita di una connessione internet e del servizio di localizzazione attivo (gps).\n\nInserisci i dati delle persone che stanno intorno a te, crea la tua "rubrica" per essere pronto in caso di necessità.\nPer ognuno di essi scegli i numeri di telefono di riferimento da informare, via sms o whatsapp, della avvenuta richiesta di soccorso.\n(L\'invio di messaggi sms potrebbe richiedere spese aggiuntive in base al contratto con il tuo operatore.\nPer utilizzare al meglio whatsapp è richiesto di selezionare un contatto esistente in rubrica)\n\nIn caso di emergenza ti basterà premere sul nome della persona infortunata per attivare una richiesta di soccorso nel luogo in cui ti trovi,potrai inoltre segnalare alcuni sintomi che noti per facilitare i soccorritori.\n\nModifica i dati di ogni utente con un click lungo sulla sua icona.\n\nResta aggiornato sulle tue richieste grazie al nostro servizio di notifica.</string>
     <string name="description_image">Icona</string>
     <string name="button_skip">Salta tutorial</string>
     <string name="button_continue">Continua</string>
@@ -22,7 +22,7 @@
     <string name="hint_CF">Codice Fiscale</string>
     <string name="hint_data">Data di nascita</string>
     <string name="hint_telephone">Telefono</string>
-    <string name="contatti_utili">Contatti utili:\nSe è abilitato l\'invio di messaggi inserisci il numero o clicca sul bottone Rubrica e scegli il numero della persona a cui vuoi mandare l\'avviso della richiesta di emergenza </string>
+    <string name="contatti_utili">Contatti utili:\nSe è abilitato l\'invio di messaggi inserisci il numero o clicca sul bottone Rubrica e scegli il numero della persona a cui vuoi mandare l\'avviso dell'avvenuta richiesta di emergenza </string>
     <string name="rubrica">Rubrica</string>
     <string name="hint_contact1">Contatto 1</string>
     <string name="hint_contact2">Contatto2</string>
@@ -39,7 +39,7 @@
     <string name="menu_tutorial">Tutorial</string>
 
     <!-- problems activity -->
-    <string name="titleTextView_text">Inserisca le informazioni per il soccorso</string>string>
+    <string name="titleTextView_text">Inserisci le informazioni per il soccorso</string>string>
     <string name="positionTextView_text">Posizione non disponibile</string>
     <string name="invia">Invia</string>
 
@@ -54,7 +54,7 @@
     <string name="remember_phone_number">Ricorda il numero di telefono</string>
     <string name="remember_phone_number_summary">Utilizza sempre lo stesso numero di telefono come contatto</string>
     <string name="messages">Scegli metodo di messaggistica</string>
-    <string name="messages_summary">Cliccando è possibile scegliere il metodo di messagistica da utilizzare in caso di emergenza: utilizzando gli SMS è possibile inviare un messaggio a due contatti di emergenza, con whatsapp è possibile aprire l\'applicazione di messaggistica ed inviare un messaggio a un solo utente altrimenti è possibile scegliere di non inviare nulla, in ogni caso la tua richiesta sarà ricevuta ed elaborata da un nostro operatore. I messaggi inviati sono generati automaticamente dalla applicazione.</string>
+    <string name="messages_summary">Cliccando qui è possibile scegliere il metodo di messagistica da utilizzare in caso di emergenza: utilizzando gli SMS è possibile inviare un messaggio a due contatti di riferimento, con whatsapp è possibile aprire l\'applicazione di messaggistica ed inviare un messaggio a un solo utente altrimenti è possibile scegliere di non inviare nulla, in ogni caso la tua richiesta sarà ricevuta ed elaborata da un nostro operatore. I messaggi inviati sono generati automaticamente dalla applicazione.</string>
     <string name="messages_title">Tipo di messaggi</string>
     <string-array name="messages_keys">
         <item>Nessuno</item>
@@ -68,7 +68,7 @@
     </string-array>
     <string name="messages_default">0</string>
 
-    <string name="gps_network_not_enabled">Per un efficente utilizzo del servizio è necessario attivare la localizzazione</string>
+    <string name="gps_network_not_enabled">Per un utilizzo efficente del servizio è necessario attivare la localizzazione</string>
     <string name="open_location_settings">Apri localizzazione</string>
     <string name="Cancel">Annulla</string>
 
