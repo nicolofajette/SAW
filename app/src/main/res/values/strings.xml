@@ -22,7 +22,7 @@
     <string name="hint_CF">Codice Fiscale</string>
     <string name="hint_data">Data di nascita</string>
     <string name="hint_telephone">Telefono</string>
-    <string name="contatti_utili">Contatti utili:\nSe è abilitato l\'invio di messaggi inserisci il numero o clicca sul bottone Rubrica e scegli il numero della persona a cui vuoi mandare l\'avviso dell'avvenuta richiesta di emergenza </string>
+    <string name="contatti_utili">Contatti utili:\nSe è abilitato l\'invio di messaggi inserisci il numero o clicca sul bottone Rubrica e scegli il numero della persona a cui vuoi mandare l\'avviso dell\'avvenuta richiesta di emergenza </string>
     <string name="rubrica">Rubrica</string>
     <string name="hint_contact1">Contatto 1</string>
     <string name="hint_contact2">Contatto2</string>
