@@ -25,7 +25,7 @@
     <string name="contatti_utili">Contatti utili:\nSe è abilitato l\'invio di messaggi inserisci il numero o clicca sul bottone Rubrica e scegli il numero della persona a cui vuoi mandare l\'avviso dell\'avvenuta richiesta di emergenza </string>
     <string name="rubrica">Rubrica</string>
     <string name="hint_contact1">Contatto 1</string>
-    <string name="hint_contact2">Contatto2</string>
+    <string name="hint_contact2">Contatto 2</string>
     <string name="radioNone">Nessuno</string>
     <string name="radioMessage">Messaggi</string>
     <string name="radioWhatsapp">Whatsapp</string>
