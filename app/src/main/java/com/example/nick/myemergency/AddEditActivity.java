@@ -274,6 +274,10 @@ public class AddEditActivity extends Activity
             textViewInfo.setText("Aggiornamento dei dati");
         }
 
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+            ((RadioButton)radioSendMessages.getChildAt(1)).setEnabled(false);
+        }
+
         rememberPhoneNumber = prefs.getBoolean("pref_remember_phone_number", true);
         messages_type = Integer.parseInt(prefs.getString("pref_messages", "0"));
         ((RadioButton)radioSendMessages.getChildAt(messages_type)).setChecked(true);
