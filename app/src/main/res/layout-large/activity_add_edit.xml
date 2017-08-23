@@ -114,13 +114,13 @@
                     android:id="@+id/contact1Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.35"
+                    android:layout_weight="0.25"
                     android:text="@string/rubrica"/>
                 <EditText
                     android:id="@+id/contact1EditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.65"
+                    android:layout_weight="0.75"
                     android:hint="@string/hint_contact1"
                     android:inputType="number"
                     android:imeOptions="actionDone"/>
@@ -133,13 +133,13 @@
                     android:id="@+id/contact2Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.35"
+                    android:layout_weight="0.25"
                     android:text="@string/rubrica"/>
                 <EditText
                     android:id="@+id/contact2EditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.65"
+                    android:layout_weight="0.75"
                     android:hint="@string/hint_contact2"
                     android:inputType="number"
                     android:imeOptions="actionDone"/>

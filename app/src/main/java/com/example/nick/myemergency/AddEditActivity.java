@@ -225,12 +225,19 @@ public class AddEditActivity extends Activity
                 String pattern = "((((0[1-9]|1[0-9]|2[0-8])(\\/)(0[1-9]|1[0-2]))|((2[9]|3[0])(\\/)(0[469]|11))|((3[1])(\\/)(0[13578]|1[02])))(\\/)(19([0-9][0-9])|20(0[0-9]|1[0-5])))|((29)(\\/)(02)(\\/)(19(0[048]|1[26]|2[048]|3[26]|4[048]|5[26]|6[048]|7[26]|8[048]|9[26])|20(0[048]|1[26])))";
                 Pattern regEx = Pattern.compile(pattern);
                 Matcher m = regEx.matcher(anniEditText.getText().toString());
+                Log.d("pluto", "pippo");
                 if (anniEditText.getText().toString().length() <= 0) {
                     anniEditText.setError("Questo campo non può essere vuoto");
                 } else if (!m.matches()) {
                     anniEditText.setError("Formato da rispettare gg/mm/aaaa");
                 } else {
-                    anniEditText.setError(null);
+                    if (CFEditText.getText().toString().length() == 11) {
+                        if (controllaData(CFEditText.getText().toString(), anniEditText.getText().toString())) {
+                            anniEditText.setError(null);
+                        } else {
+                            anniEditText.setError("Data non conforme al Codice Fiscale");
+                        }
+                    }
                 }
             }
         });
@@ -403,6 +410,10 @@ public class AddEditActivity extends Activity
                         (CFEditText.getError() == null && CFEditText.getText().length() != 0) &&
                         (anniEditText.getError() == null && anniEditText.getText().length() != 0) &&
                         (telephoneEditText.getError() == null && telephoneEditText.getText().length() != 0)) {
+                    if (!controllaData(CFEditText.getText().toString(), anniEditText.getText().toString())) {
+                        CFEditText.setError("Data non conforme al Codice Fiscale");
+                        CFEditText.requestFocus();
+                    } else {
                         saveToDB();
                         if (!firstTime) {
                             this.finish();
@@ -411,6 +422,7 @@ public class AddEditActivity extends Activity
                             startActivity(intent);
                             finish();
                         }
+                    }
                 }
                 break;
             case R.id.menuCancel:
@@ -478,6 +490,14 @@ public class AddEditActivity extends Activity
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
 
         anniEditText.setText(sdf.format(myCalendar.getTime()));
+        if (CFEditText.getText().toString().length() == 16) {
+            if (!controllaData(CFEditText.getText().toString(), sdf.format(myCalendar.getTime()))) {
+                CFEditText.setError("Data non conforme al Codice Fiscale");
+                CFEditText.requestFocus();
+            } else {
+                CFEditText.setError(null);
+            }
+        }
     }
 
 
@@ -546,5 +566,84 @@ public class AddEditActivity extends Activity
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("pref_messages", Integer.toString(messages_type));
         editor.commit();
+    }
+
+    public Boolean controllaData (String CF, String data) {
+        Boolean cond = false;
+        String annoCF = CF.substring(6,8);
+        String meseCF = getMese(CF.substring(8,9));
+        String giornoCFGen = CF.substring(9,11);
+        String giornoCF;
+        if (Integer.parseInt(giornoCFGen)>40) {
+            int day = Integer.parseInt(giornoCFGen) -40;
+            if (day < 10) {
+                giornoCF = "0"+ Integer.toString(day);
+            } else {
+                giornoCF = Integer.toString(day);
+            }
+        } else {
+            giornoCF = giornoCFGen;
+        }
+        String[] date = data.split("/");
+        Log.d("annoCF",annoCF);
+        Log.d("meseCF", meseCF);
+        Log.d("giornoCF", giornoCF);
+        Log.d("anno",date[0]);
+        Log.d("mese", date[1]);
+        Log.d("giorno", date[2]);
+        if (giornoCF.equals(date[0])) {
+            if (meseCF.equals(date[1])) {
+                if (annoCF.equals(date[2].substring(2,4))) {
+                    cond = true;
+                }
+            }
+        }
+        return cond;
+    }
+
+    private String getMese(String codice) {
+        String risultato;
+        switch(codice) {
+            case "A":
+                risultato = "01";
+                break;
+            case "B":
+                risultato = "02";
+                break;
+            case "C":
+                risultato = "03";
+                break;
+            case "D":
+                risultato = "04";
+                break;
+            case "E":
+                risultato = "05";
+                break;
+            case "H":
+                risultato = "06";
+                break;
+            case "L":
+                risultato = "07";
+                break;
+            case "M":
+                risultato = "08";
+                break;
+            case "P":
+                risultato = "09";
+                break;
+            case "R":
+                risultato = "10";
+                break;
+            case "S":
+                risultato = "11";
+                break;
+            case "T":
+                risultato = "12";
+                break;
+            default:
+                risultato = "";
+                break;
+        }
+        return risultato;
     }
 }

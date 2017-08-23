@@ -39,7 +39,7 @@ public class TutorialFragment2 extends Fragment {
             }
 
         });
-
+        setRetainInstance(true);
         return view;
 
     }

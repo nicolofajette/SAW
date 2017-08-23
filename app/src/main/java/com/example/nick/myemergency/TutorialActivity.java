@@ -1,6 +1,7 @@
 package com.example.nick.myemergency;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -12,6 +13,10 @@ public class TutorialActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tutorial_activity);
+
+        if(getResources().getBoolean(R.bool.landscape_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
 
         Intent intent = getIntent();
         tutorial = intent.getBooleanExtra("tutorial", false);
