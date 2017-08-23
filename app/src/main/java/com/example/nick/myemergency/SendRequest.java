@@ -177,7 +177,7 @@ public class SendRequest extends AsyncTask<HashMap<String, String>, Void, String
             // get default SharedPreferences object
             prefs = PreferenceManager.getDefaultSharedPreferences(context);
             messages_type = Integer.parseInt(prefs.getString("pref_messages", "0"));
-            String text = "E' stata inviata una richiesta di emergenza per " + information.getName() + " " + information.getSurname() + " con queste problematiche: " + problemstring + "dal cellulare di " + possessor.getName() + " " + possessor.getSurname();
+            String text = "E' stata inviata una richiesta di emergenza per " + information.getName() + " " + information.getSurname() + " con questi sintomi: " + problemstring + "\nInviato tramite MyEmergency dal cellulare di " + possessor.getName() + " " + possessor.getSurname();
             Log.d("Pippo",Integer.toString(text.length()));
             if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
                 if (messages_type == MESSAGES_NORMAL) {
