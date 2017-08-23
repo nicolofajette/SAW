@@ -36,7 +36,11 @@ public class NotificationReceiver extends BroadcastReceiver {
                 String msg = intent.getStringExtra("message");  //Messaggio inviato dal GCM
                 String name_surname = intent.getStringExtra("name_surname");
                 Evento event = new Evento();
-                event.setType("RICHIESTA ACCETTATA");
+                if (msg.equals("Operatore ha rifiutato la tua richiesta")) {
+                    event.setType("RICHIESTA RIFIUTATA");
+                } else {
+                    event.setType("RICHIESTA ACCETTATA");
+                }
                 event.setName(name_surname);
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
                 event.setTime(currentDateTimeString);
@@ -62,7 +66,11 @@ public class NotificationReceiver extends BroadcastReceiver {
         mBuilder.setContentIntent(pendingIntent);
 
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        mBuilder.setContentTitle("Richiesta accettata");
+        if (msg.equals("Operatore ha rifiutato la tua richiesta")) {
+            mBuilder.setContentTitle("Richiesta rifiutata");
+        } else {
+            mBuilder.setContentTitle("Richiesta accettata");
+        }
         mBuilder.setContentText(msg);
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); //Recupero il suono di default delle notifiche
         mBuilder.setSound(uri);
