@@ -225,7 +225,6 @@ public class AddEditActivity extends Activity
                 String pattern = "((((0[1-9]|1[0-9]|2[0-8])(\\/)(0[1-9]|1[0-2]))|((2[9]|3[0])(\\/)(0[469]|11))|((3[1])(\\/)(0[13578]|1[02])))(\\/)(19([0-9][0-9])|20(0[0-9]|1[0-5])))|((29)(\\/)(02)(\\/)(19(0[048]|1[26]|2[048]|3[26]|4[048]|5[26]|6[048]|7[26]|8[048]|9[26])|20(0[048]|1[26])))";
                 Pattern regEx = Pattern.compile(pattern);
                 Matcher m = regEx.matcher(anniEditText.getText().toString());
-                Log.d("pluto", "pippo");
                 if (anniEditText.getText().toString().length() <= 0) {
                     anniEditText.setError("Questo campo non può essere vuoto");
                 } else if (!m.matches()) {
@@ -488,8 +487,16 @@ public class AddEditActivity extends Activity
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
-
+        String pattern = "((((0[1-9]|1[0-9]|2[0-8])(\\/)(0[1-9]|1[0-2]))|((2[9]|3[0])(\\/)(0[469]|11))|((3[1])(\\/)(0[13578]|1[02])))(\\/)(19([0-9][0-9])|20(0[0-9]|1[0-5])))|((29)(\\/)(02)(\\/)(19(0[048]|1[26]|2[048]|3[26]|4[048]|5[26]|6[048]|7[26]|8[048]|9[26])|20(0[048]|1[26])))";
+        Pattern regEx = Pattern.compile(pattern);
+        Matcher m = regEx.matcher(sdf.format(myCalendar.getTime()));
         anniEditText.setText(sdf.format(myCalendar.getTime()));
+        if (!m.matches()) {
+            anniEditText.setError("Formato da rispettare gg/mm/aaaa");
+        } else {
+            anniEditText.setError(null);
+        }
+
         if (CFEditText.getText().toString().length() == 16) {
             if (!controllaData(CFEditText.getText().toString(), sdf.format(myCalendar.getTime()))) {
                 CFEditText.setError("Data non conforme al Codice Fiscale");
